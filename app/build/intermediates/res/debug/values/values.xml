@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/home/moody/AndroidStudioProjects/NoteApp/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">NoteApp</string>
+    <string name="body">Content</string>
+    <string name="confirm">Save</string>
+    <string name="edit_note">Edit Note</string>
+    <string name="highPriority">High</string>
+    <string name="lowPriority">Low</string>
+    <string name="mediumPriority">Medium</string>
+    <string name="menu_delete">Delete Note</string>
+    <string name="menu_insert">Add New Note</string>
+    <string name="no_notes">No note.</string>
+    <string name="title">Title</string>
+</resources>

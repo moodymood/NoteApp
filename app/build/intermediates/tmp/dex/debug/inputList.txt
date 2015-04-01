@@ -1,0 +1,4 @@
+/home/moody/AndroidStudioProjects/NoteApp/app/build/intermediates/classes/debug
+/home/moody/AndroidStudioProjects/NoteApp/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-b17a2f183dc7a303c4ddff4aa0858736f10a3c03.jar
+/home/moody/AndroidStudioProjects/NoteApp/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-8d40b3333ae1d74497ec95266c44ef4c172c451d.jar
+/home/moody/AndroidStudioProjects/NoteApp/app/build/intermediates/pre-dexed/debug/classes-1369066ab1b7998c0c491028ac778f5edb32e449.jar
