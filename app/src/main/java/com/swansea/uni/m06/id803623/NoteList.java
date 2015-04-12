@@ -21,6 +21,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +31,8 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -51,7 +55,12 @@ public class NoteList extends ListActivity {
         setContentView(R.layout.notes_list);
         mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();
+
         fillData();
+
+      //  updateBackgroundColour();
+
+
         registerForContextMenu(getListView());
     }
 
@@ -60,17 +69,54 @@ public class NoteList extends ListActivity {
         startManagingCursor(notesCursor);
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
-        String[] from = new String[]{NotesDbAdapter.KEY_TITLE};
+        String[] from = new String[]{NotesDbAdapter.KEY_TITLE, NotesDbAdapter.KEY_PRIORITY};
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[]{R.id.text1};
+        int[] to = new int[]{R.id.itemText};
 
         // Now create a simple cursor adapter and set it to display
-        SimpleCursorAdapter notes =
-            new SimpleCursorAdapter(this, R.layout.notes_item, notesCursor, from, to);
+        MySimpleCursorAdapter notes =
+            new MySimpleCursorAdapter(this, R.layout.notes_item, notesCursor, from, to);
         setListAdapter(notes);
     }
 
+/*
+
+    void updateBackgroundColour(){
+        int backgroundColor, sectionColor;
+
+        LinearLayout mainWrapper = (LinearLayout) findViewById(R.id.mainWrapper);
+        LinearLayout titleAndContentWrapper = (LinearLayout) findViewById(R.id.titleAndContentWrapper);
+        LinearLayout priorityWrapper = (LinearLayout) findViewById(R.id.priorityWrapper);
+        LinearLayout alarmWrapper = (LinearLayout) findViewById(R.id.alarmWrapper);
+
+        if(priority == Note.HIGH_PRIORITY) {
+            backgroundColor = getResources().getColor(R.color.redDark);
+            sectionColor = getResources().getColor(R.color.white);
+            Log.d("NoteDetail", "setting RED");
+
+        }
+        else if(priority == Note.MEDIUM_PRIORITY)
+        {
+            backgroundColor = getResources().getColor(R.color.orangeDark);
+            sectionColor = getResources().getColor(R.color.white);
+            Log.d("NoteDetail", "setting ORANGE");
+
+        }
+        else
+        {
+            backgroundColor = getResources().getColor(R.color.yellowDark);
+            sectionColor = getResources().getColor(R.color.white);
+            Log.d("NoteDetail", "setting YELLOW");
+
+        }
+
+        mainWrapper.setBackgroundColor(backgroundColor);
+        titleAndContentWrapper.setBackgroundColor(sectionColor);
+        priorityWrapper.setBackgroundColor(sectionColor);
+        alarmWrapper.setBackgroundColor(sectionColor);
+    }
+ */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -128,30 +174,34 @@ public class NoteList extends ListActivity {
     }
 
 
-    public class SimpleArrayAdapter extends ArrayAdapter<String> {
-        private final Context context;
-        private final String[] values;
+    public class MySimpleCursorAdapter extends SimpleCursorAdapter {
 
-        public SimpleArrayAdapter(Context context, String[] values) {
-            super(context, R.layout.notes_item, values);
-            this.context = context;
-            this.values = values;
+        public MySimpleCursorAdapter(Context context, int layout, Cursor cursor, String[] from, int[] to) {
+            super(context, layout, cursor, from, to);
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.notes_item, parent, false);
-            TextView textView1 = (TextView) rowView.findViewById(R.id.text1);
-            TextView textView2 = (TextView) rowView.findViewById(R.id.text2);
-            textView1.setText(values[position]);
-            textView2.setText(values[position]);
-            // change the icon for Windows and iPhone
-            String s = values[position];
+        public void bindView(View view, Context context, Cursor cursor)  {
+            super.bindView(view, context, cursor);
+            int priority = cursor.getInt(
+                    cursor.getColumnIndexOrThrow(NotesDbAdapter.KEY_PRIORITY));
 
 
-            return rowView;
+            if(priority == Note.HIGH_PRIORITY) {
+                view.setBackgroundColor(getResources().getColor(R.color.redDark));
+
+            }
+
+            else if(priority == Note.MEDIUM_PRIORITY)
+            {
+                view.setBackgroundColor(getResources().getColor(R.color.orangeDark));
+            }
+
+            else
+            {
+                view.setBackgroundColor(getResources().getColor(R.color.yellowDark));
+            }
+
         }
     }
 

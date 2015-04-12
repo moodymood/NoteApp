@@ -2,7 +2,7 @@
 <resources>
     <!-- From: file:/home/moody/AndroidStudioProjects/NoteApp/app/src/main/res/values/colours.xml -->
     <eat-comment/>
-    <color name="defaultGrey">#5aeadfe0</color>
+    <color name="defaultGrey">#5ad3c8c9</color>
     <color name="orangeDark">#dbf39308</color>
     <color name="redDark">#b2f3481c</color>
     <color name="white">#5affffff</color>

@@ -13,13 +13,12 @@ int id alarmWrapper 0x7f060009
 int id confirm 0x7f06000e
 int id contentEditText 0x7f060003
 int id highRadioButton 0x7f060006
+int id itemText 0x7f06000f
 int id lowRadioButton 0x7f060008
 int id mainWrapper 0x7f060000
 int id mediumRadioButton 0x7f060007
 int id priorityRadioGroup 0x7f060005
 int id priorityWrapper 0x7f060004
-int id text1 0x7f06000f
-int id text2 0x7f060010
 int id titleAndContentWrapper 0x7f060001
 int id titleEditText 0x7f060002
 int layout note_detail 0x7f030000

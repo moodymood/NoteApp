@@ -247,7 +247,6 @@ public class NoteDetail extends  FragmentActivity {
         titleAndContentWrapper.setBackgroundColor(sectionColor);
         priorityWrapper.setBackgroundColor(sectionColor);
         alarmWrapper.setBackgroundColor(sectionColor);
-
     }
 
     void updateBackgroundColour(){
