@@ -4,8 +4,8 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        minSdkVersion 11
-        applicationId "com.swansea.uni.803623.noteApp"
+        minSdkVersion 14
+        applicationId "com.swansea.uni.id803623"
     }
 
     buildTypes {

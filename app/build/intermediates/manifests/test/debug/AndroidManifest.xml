@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.swansea.uni.803623.noteApp.test">
+    package="com.swansea.uni.id803623.test">
 
-    <uses-sdk android:minSdkVersion="11" android:targetSdkVersion="11" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="14" />
 
     <application>
         <uses-library android:name="android.test.runner" />
     </application>
 
     <instrumentation android:name="android.test.InstrumentationTestRunner"
-                     android:targetPackage="com.swansea.uni.803623.noteApp"
+                     android:targetPackage="com.swansea.uni.id803623"
                      android:handleProfiling="false"
                      android:functionalTest="false"
-                     android:label="Tests for com.swansea.uni.803623.noteApp"/>
+                     android:label="Tests for com.swansea.uni.id803623"/>
 </manifest>

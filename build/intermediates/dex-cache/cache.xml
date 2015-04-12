@@ -2,13 +2,6 @@
 <items version="2" >
 
     <item
-        jar="/home/moody/Desktop/winShare/Notepadv3Solution/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="/home/moody/Desktop/winShare/Notepadv3Solution/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-ef0e3eb2de9662d2f811f094e8f6867f60115377.jar" />
-    </item>
-    <item
         jar="/home/moody/Desktop/winShare/Notepadv3Solution/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -23,18 +16,25 @@
         <dex dex="/home/moody/AndroidStudioProjects/NoteApp/app/build/intermediates/pre-dexed/debug/classes-1369066ab1b7998c0c491028ac778f5edb32e449.jar" />
     </item>
     <item
-        jar="/home/moody/AndroidStudioProjects/NoteApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="/home/moody/AndroidStudioProjects/NoteApp/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-8d40b3333ae1d74497ec95266c44ef4c172c451d.jar" />
-    </item>
-    <item
         jar="/home/moody/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
         <dex dex="/home/moody/Desktop/winShare/Notepadv3Solution/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-b17a2f183dc7a303c4ddff4aa0858736f10a3c03.jar" />
+    </item>
+    <item
+        jar="/home/moody/Desktop/winShare/Notepadv3Solution/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/home/moody/Desktop/winShare/Notepadv3Solution/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-ef0e3eb2de9662d2f811f094e8f6867f60115377.jar" />
+    </item>
+    <item
+        jar="/home/moody/AndroidStudioProjects/NoteApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/home/moody/AndroidStudioProjects/NoteApp/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-8d40b3333ae1d74497ec95266c44ef4c172c451d.jar" />
     </item>
 
 </items>

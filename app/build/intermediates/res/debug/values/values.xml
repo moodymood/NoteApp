@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- From: file:/home/moody/AndroidStudioProjects/NoteApp/app/src/main/res/values/colours.xml -->
+    <eat-comment/>
+    <color name="defaultGrey">#5aeadfe0</color>
+    <color name="orangeDark">#dbf39308</color>
+    <color name="redDark">#b2f3481c</color>
+    <color name="white">#5affffff</color>
+    <color name="yellowDark">#dbe5cd28</color>
     <!-- From: file:/home/moody/AndroidStudioProjects/NoteApp/app/src/main/res/values/strings.xml -->
     <eat-comment/>
-    <string name="app_name">NoteApp</string>
+    <string name="alarm">Reminder</string>
+    <string name="alarmSwitch">Set Alarm</string>
+    <string name="alarmTime">Set Time</string>
+    <string name="app_name">Notes</string>
     <string name="body">Content</string>
     <string name="confirm">Save</string>
     <string name="edit_note">Edit Note</string>
@@ -12,5 +22,6 @@
     <string name="menu_delete">Delete Note</string>
     <string name="menu_insert">Add New Note</string>
     <string name="no_notes">No note.</string>
+    <string name="priority">Priority</string>
     <string name="title">Title</string>
 </resources>
