@@ -4,6 +4,7 @@ int color redDark 0x7f040002
 int color white 0x7f040003
 int color yellowDark 0x7f040004
 int drawable ic_launcher 0x7f020000
+int drawable icon 0x7f020001
 int id alarmSwitch 0x7f06000a
 int id alarmTimeString 0x7f06000c
 int id alarmTimeValue 0x7f06000d
