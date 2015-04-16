@@ -8,11 +8,13 @@
     <string name="body">Content</string>
     <string name="confirm">Save</string>
     <string name="edit_note">Edit Note</string>
+    <string name="new_note">New Note</string>
+
     <string name="priority">Priority</string>
     <string name="mediumPriority">Medium</string>
     <string name="lowPriority">Low</string>
     <string name="highPriority">High</string>
-    <string name="alarm">Reminder</string>
+    <string name="alarm">Alarm</string>
     <string name="alarmSwitch">Set Alarm</string>
     <string name="alarmTime">Set Time</string>
 

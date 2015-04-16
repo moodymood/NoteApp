@@ -161,59 +161,7 @@ public class NotesDbAdapter {
                 KEY_CONTENT, KEY_PRIORITY, KEY_ALARM}, null, null, null, null, KEY_PRIORITY + " ASC");
     }
 
-    /**
-     * Return a Cursor over the list of all notes in the database
-     *
-     * @return Cursor over all notes
 
-    public List<Note> fetchAllNotes() {
-
-        String query = "select " + KEY_ROW_ID + ", " + KEY_TITLE + ", " + KEY_CONTENT + ", " + KEY_PRIORITY + ", " + KEY_ALARM +  " from " + DATABASE_TABLE;
-        Cursor cursor = mDb.rawQuery(query, null);
-
-        List<Note> noteList = new ArrayList<>();
-
-        while (cursor.moveToNext()) {
-            Note note = new Note();
-            note.setRowId(cursor.getInt(0));
-            note.setTitle(cursor.getString(1));
-            note.setContent(cursor.getString(2));
-            note.setPriority(cursor.getInt(3));
-            note.setAlarm(cursor.getString(4));
-            noteList.add(note);
-        }
-        cursor.close();
-        return noteList;
-    }
-     */
-
-    /**
-     * Return a Cursor positioned at the note that matches the given rowId
-     * 
-     * @param rowId id of note to retrieve
-     * @return Cursor positioned to matching note, if found
-     * @throws SQLException if note could not be found/retrieved
-     */
-    /*
-    public Note fetchNote(long rowId) throws SQLException {
-
-        String query = "select " +  KEY_TITLE + ", " + KEY_CONTENT + ", " + KEY_PRIORITY + ", " + KEY_ALARM + " from " + DATABASE_TABLE + " where " + KEY_ROW_ID + "=" + rowId;
-        Cursor cursor = mDb.rawQuery(query, null);
-
-        Note note = new Note();
-
-        while (cursor.moveToNext()) {
-             note.setRowId(rowId);
-             note.setTitle(cursor.getString(0));
-             note.setContent(cursor.getString(1));
-             note.setPriority(cursor.getInt(2));
-             note.setAlarm(cursor.getString(3));
-        }
-        cursor.close();
-        return note;
-    }
-
-    */
 
     public Cursor fetchNote(long rowId) throws SQLException {
 

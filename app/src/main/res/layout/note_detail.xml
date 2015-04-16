@@ -27,13 +27,15 @@
 
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title" />
+                android:text="@string/title"
+                android:maxLines="1"/>
             <EditText android:id="@+id/titleEditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="text"
-                android:layout_gravity="top" />
+                android:layout_gravity="top"
+                android:maxLength="30" />
         </LinearLayout>
 
         // Note Content
@@ -51,8 +53,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:scrollbars="vertical"
-                android:inputType="text"
-                android:layout_gravity="top" />
+                android:layout_gravity="top"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:singleLine="false" />
         </LinearLayout>
 
     </LinearLayout>
@@ -124,32 +128,33 @@
             android:layout_height="wrap_content"
             android:text="@string/alarmSwitch"
             android:id="@+id/alarmSwitch"
-            android:checked="false" />
+            android:checked="false"
+            android:textColor="#000000" />
 
         // Alarm time
         <RelativeLayout android:id="@+id/alarmTimeWrapper"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
 
             <TextView android:id="@+id/alarmTimeString"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/alarmTime"
-                android:textSize="17dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                style="@android:style/TextAppearance.Holo" />
 
             <TextView android:id="@+id/alarmTimeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12:00, 12/15/2012"
-                android:textSize="17dp"
-                android:layout_alignTop="@+id/alarmTimeString"
-                android:layout_centerHorizontal="true"
-                android:textColor="#000000" />
+                style="@android:style/TextAppearance.Holo"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/alarmTimeString"
+                android:layout_marginLeft="43dp" />
 
         </RelativeLayout>
 
@@ -161,6 +166,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>

@@ -13,9 +13,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:background="#5affa000"
-        android:clickable="true">
+        android:clickable="true"
+        android:layout_margin="10dp">
 
 
         // Note Title
@@ -27,13 +27,15 @@
 
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title" />
+                android:text="@string/title"
+                android:maxLines="1"/>
             <EditText android:id="@+id/titleEditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="text"
-                android:layout_gravity="top" />
+                android:layout_gravity="top"
+                android:maxLength="30" />
         </LinearLayout>
 
         // Note Content
@@ -51,8 +53,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:scrollbars="vertical"
-                android:inputType="text"
-                android:layout_gravity="top" />
+                android:layout_gravity="top"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:singleLine="false" />
         </LinearLayout>
 
     </LinearLayout>
@@ -118,49 +122,39 @@
             android:layout_height="wrap_content"
             android:text="@string/alarm" />
 
-        // Alarm switch
-        <Switch
-            android:layout_width="203dp"
-            android:layout_height="wrap_content"
-            android:text="@string/alarmSwitch"
-            android:id="@+id/alarmSwitch"
-            android:checked="false" />
 
-        // Alarm time
-        <RelativeLayout android:id="@+id/alarmTimeWrapper"
+
+        // Alarm
+        <LinearLayout android:id="@+id/alarmTimeWrapper"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
 
-            <TextView android:id="@+id/alarmTimeString"
+            // Alarm switch
+            <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/alarmTime"
-                android:textSize="17dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:textColor="#000000" />
+                android:id="@+id/alarmSwitch"
+                android:checked="false"
+                android:textColor="#000000"
+                android:textOff="SET"
+                android:textOn="CANCEL" />
 
+            // Alarm time
             <TextView android:id="@+id/alarmTimeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12:00, 12/15/2012"
-                android:textSize="17dp"
-                android:layout_alignTop="@+id/alarmTimeString"
-                android:layout_centerHorizontal="true"
-                android:textColor="#000000" />
+                style="@android:style/TextAppearance.Holo"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/alarmTimeString"
+                android:layout_marginLeft="43dp"
+                android:visibility="visible"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
 
-    <Button android:id="@+id/confirm"
-        android:text="@string/confirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>
