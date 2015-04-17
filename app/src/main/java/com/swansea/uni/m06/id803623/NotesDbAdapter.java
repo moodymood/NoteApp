@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2008 Google Inc.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
-
 package com.swansea.uni.m06.id803623;
 
 import android.content.ContentValues;
@@ -28,12 +12,8 @@ import android.util.Log;
  * Simple notes database access helper class. Defines the basic CRUD operations
  * for the notepad example, and gives the ability to list all notes as well as
  * retrieve or modify a specific note.
- * 
- * This has been improved from the first version of this tutorial through the
- * addition of better error handling and also using returning a Cursor instead
- * of using a collection of inner classes (which is less scalable and not
- * recommended).
  */
+
 public class NotesDbAdapter {
 
     private static final String TAG = "NotesDbAdapter";
@@ -49,10 +29,12 @@ public class NotesDbAdapter {
     public static final String KEY_PRIORITY = "priority";
     public static final String KEY_ALARM = "alarm";
 
+    public static final int HIGH_PRIORITY = 0;
+    public static final int MEDIUM_PRIORITY = 1;
+    public static final int LOW_PRIORITY = 2;
 
-    /**
-     * Database creation sql statement
-     */
+
+    /** Database creation sql statement */
     private static final String DATABASE_NAME = "notes_db";
     private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_CREATE =
@@ -75,7 +57,6 @@ public class NotesDbAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-
             db.execSQL(DATABASE_CREATE);
         }
 
@@ -90,6 +71,7 @@ public class NotesDbAdapter {
         }
     }
 
+
     /**
      * Constructor - takes the context to allow the database to be
      * opened/created
@@ -99,6 +81,7 @@ public class NotesDbAdapter {
     public NotesDbAdapter(Context ctx) {
         this.mCtx = ctx;
     }
+
 
     /**
      * Open the notes database. If it cannot be opened, try to create a new
@@ -110,12 +93,16 @@ public class NotesDbAdapter {
      * @throws SQLException if the database could be neither opened or created
      */
     public NotesDbAdapter open() throws SQLException {
+
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
+
         return this;
     }
 
+
     public void close() {
+
         mDbHelper.close();
     }
 
@@ -126,10 +113,13 @@ public class NotesDbAdapter {
      * a -1 to indicate failure.
      * 
      * @param title the title of the note
-     * @param content the body of the note
+     * @param content the content of the note
+     * @param priority priority of the note
+     * @param alarm alarm of the note
      * @return rowId or -1 if failed
      */
     public long createNote(String title, String content, int priority, String alarm) {
+
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
         initialValues.put(KEY_CONTENT, content);
@@ -138,6 +128,7 @@ public class NotesDbAdapter {
 
         return mDb.insert(DATABASE_TABLE, null, initialValues);
     }
+
 
     /**
      * Delete the note with the given rowId
@@ -149,6 +140,7 @@ public class NotesDbAdapter {
 
         return mDb.delete(DATABASE_TABLE, KEY_ROW_ID + "=" + rowId, null) > 0;
     }
+
 
     /**
      * Return a Cursor over the list of all notes in the database
@@ -162,7 +154,11 @@ public class NotesDbAdapter {
     }
 
 
-
+    /**
+     * Return a Cursor over a note identified by rowId
+     *
+     * @return the note
+     */
     public Cursor fetchNote(long rowId) throws SQLException {
 
         Cursor mCursor =
@@ -173,8 +169,8 @@ public class NotesDbAdapter {
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
-        return mCursor;
 
+        return mCursor;
     }
 
 
@@ -186,6 +182,8 @@ public class NotesDbAdapter {
      * @param rowId id of note to update
      * @param title value to set note title to
      * @param content value to set note body to
+     * @param priority value to set note priority to
+     * @param alarm value to set note alarm to
      * @return true if the note was successfully updated, false otherwise
      */
     public boolean updateNote(long rowId, String title, String content, int priority, String alarm) {
@@ -194,8 +192,6 @@ public class NotesDbAdapter {
         args.put(KEY_CONTENT, content);
         args.put(KEY_PRIORITY, priority);
         args.put(KEY_ALARM, alarm);
-
-        Log.d("NotesDbAdapter:", "saving priority value" + priority);
 
         return mDb.update(DATABASE_TABLE, args, KEY_ROW_ID + "=" + rowId, null) > 0;
     }

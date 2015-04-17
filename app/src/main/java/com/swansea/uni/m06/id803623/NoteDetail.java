@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2008 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.swansea.uni.m06.id803623;
 
 import android.app.AlarmManager;
@@ -27,11 +11,9 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -40,14 +22,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import java.util.Calendar;
 import java.util.Date;
 
-import android.util.Log;
 
 public class NoteDetail extends  FragmentActivity {
 
@@ -59,7 +36,8 @@ public class NoteDetail extends  FragmentActivity {
     private TextView mAlarmTimeValue;
     private Switch mAlarmSwitch;
 
-
+    private DatePickerDialog mDatePicker;
+    private TimePickerDialog mTimePicker;
 
     private Long mRowId;
     private NotesDbAdapter mDbHelper;
@@ -75,7 +53,6 @@ public class NoteDetail extends  FragmentActivity {
         mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();
 
-
         mTitleText = (EditText) findViewById(R.id.titleEditText);
         mContentText = (EditText) findViewById(R.id.contentEditText);
         mPriorityRadioGroup = (RadioGroup) findViewById(R.id.priorityRadioGroup);
@@ -88,19 +65,28 @@ public class NoteDetail extends  FragmentActivity {
             Bundle extras = getIntent().getExtras();
             mRowId = extras != null ? extras.getLong(NotesDbAdapter.KEY_ROW_ID)
                     : null;
-
         }
-
-        setTitle();
 
         populateFields();
 
-        updateBackgroundColour();
+        saveState();
 
         setListeners();
 
-        setAlarmPopup();
+        setTitle();
+
+        updateBackgroundColour();
+
+        if(isNoteUrgent()){
+
+            showAlarmSetter(true);
+
+            if(alarmIsExpired())
+                showDismissPopup();
+        }
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -115,7 +101,8 @@ public class NoteDetail extends  FragmentActivity {
         switch(item.getItemId()) {
             case DELETE_ID:
                 mDbHelper.deleteNote(mRowId);
-                cancelAlarm();
+                if(userHasSetTime())
+                    cancelAlarm();
                 saveState();
                 setResult(RESULT_OK);
                 finish();
@@ -125,9 +112,9 @@ public class NoteDetail extends  FragmentActivity {
         return super.onMenuItemSelected(featureId, item);
     }
 
+
     @Override
     public void onBackPressed() {
-        //moveTaskToBack(true);
         saveState();
         setResult(RESULT_OK);
         finish();
@@ -141,23 +128,74 @@ public class NoteDetail extends  FragmentActivity {
         outState.putSerializable(NotesDbAdapter.KEY_ROW_ID, mRowId);
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
         saveState();
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
         populateFields();
+        updateBackgroundColour();
+    }
+
+    /**
+     * Check if the alarm has expired
+     *
+     * @return  true if the activity is called as result of an
+     * alarm timeout, false otherwise
+     */
+    public boolean alarmIsExpired()
+    {
+        if(userHasSetTime()) {
+            Date mAlarm = MyDateUtils.getDateFromString(mAlarmTimeValue.getText());
+            if (System.currentTimeMillis() >= mAlarm.getTime())
+                return true;
+            else
+                return false;
+        }
+        else {
+            return false;
+        }
     }
 
 
+    /**
+     * Show a pop-up which informs that the alarm time is expired.
+     */
+    void showDismissPopup()
+    {
+
+        AlertDialog.Builder mBuilder = null;
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            mBuilder = new AlertDialog.Builder(NoteDetail.this);
+        } else {
+            mBuilder = new AlertDialog.Builder(NoteDetail.this, AlertDialog.THEME_HOLO_LIGHT);
+        }
+
+        AlertDialog mAlertDialog = mBuilder.create();
+
+        mAlertDialog.setMessage(getResources().getString(R.string.dismissAlarmMSG));
+        mAlertDialog.setButton(getResources().getString(R.string.OK), new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                cancelAlarm();
+                cancelAlarmOnGUI();
+            }
+        });
+        mAlertDialog.show();
+
+    }
 
 
-
-
+    /**
+     * Set the bar title, which changes according to the
+     * calling intent.
+     */
     public void setTitle()
     {
         if(mRowId == null)
@@ -167,6 +205,9 @@ public class NoteDetail extends  FragmentActivity {
     }
 
 
+    /**
+     * Set all activity listeners
+     */
     public void setListeners() {
 
         mPriorityRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -175,14 +216,17 @@ public class NoteDetail extends  FragmentActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // checkedId is the RadioButton selected
                 updateBackgroundColour();
+                showAlarmSetter(isNoteUrgent());
+                if(userHasSetTime()) {
+                    cancelAlarmOnGUI();
+                    cancelAlarm();
+                }
             }
         });
 
         mAlarmSwitch.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (mAlarmSwitch.isChecked()) {
-                    Log.d("NoteDetail.java", "ENABLING alarm, mAlarmSwitch.isChecked() is true");
-
                     // if the user didn't press cancel
                     showAlarmTimeDialog();
 
@@ -190,65 +234,143 @@ public class NoteDetail extends  FragmentActivity {
                 } else {
                     cancelAlarm();
                     mAlarmTimeValue.setText("");
-
-                    Log.d("NoteDetail.java", "DISABLING alarm)");
-
                 }
             }
         });
     }
 
-    public void setAlarmPopup()
+
+    /**
+     * Show TimePickerDialog and a DatePickerDialog to
+     * allow the user to choose a time for the alarm.
+     */
+    public void showAlarmTimeDialog()
     {
-        Log.d("NoteDetails.java", "***************Back from alarm*************");
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            if(extras.getBoolean("alarm"))
-                dismissAlarmPopup();
+
+        final Calendar mCalendar = Calendar.getInstance();
+        mCalendar.setTime(new Date(System.currentTimeMillis()));
+
+
+        mTimePicker = new TimePickerDialog(NoteDetail.this, new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker view, int newHour, int newMinute) {
+
+                mCalendar.set(Calendar.HOUR_OF_DAY, newHour);
+                mCalendar.set(Calendar.MINUTE, newMinute);
+
+                setAlarmOnGUI(mCalendar.getTime());
+
+            }
+        }, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);
+
+        mTimePicker.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
+                if (userHasSetTime())
+                    mDatePicker.show();
+                else
+                    cancelAlarmOnGUI();
+
+            }
+        });
+        mTimePicker.setTitle(getResources().getString(R.string.alarm));
+
+
+        mDatePicker = new DatePickerDialog(NoteDetail.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int newYear, int newMonth, int newDay) {
+
+                mCalendar.setTime(MyDateUtils.getDateFromString(mAlarmTimeValue.getText()));
+                mCalendar.set(newYear, newMonth, newDay);
+
+                if(mCalendar.getTimeInMillis() <= System.currentTimeMillis()){
+                    cancelAlarmOnGUI();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.alarmInThePastMSG),
+                            Toast.LENGTH_LONG).show();
+                }
+                else {
+                    setAlarmOnGUI(mCalendar.getTime());
+                    setAlarm(mCalendar.getTime());
+                }
+
+            }
+        }, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+
+        mDatePicker.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                cancelAlarmOnGUI();
+            }
+        });
+        mDatePicker.setTitle(getResources().getString(R.string.alarm));
+
+        mTimePicker.show();
+
+    }
+
+
+    /**
+     * Update the UI when the alarm is set.
+     */
+    public void setAlarmOnGUI(Date date)
+    {
+        mAlarmTimeValue.setText(MyDateUtils.getStringFromDate(date));
+    }
+
+
+    /**
+     * Update the UI when the alarm is cancelled.
+     */
+    public void cancelAlarmOnGUI()
+    {
+        mAlarmSwitch.setChecked(false);
+        mAlarmTimeValue.setText(null);
+    }
+
+
+    /**
+     * Check ig the user has set the alarm or not
+     *
+     * @return true if the user set a valid alarm, false otherwise
+     */
+    private boolean userHasSetTime()
+    {
+        if( mAlarmTimeValue.getText() != null && mAlarmTimeValue.getText() != "" )
+            return true;
+        else
+            return false;
+    }
+
+
+    /**
+     * Set a system alarm for the current note creating a service
+     *
+     * @param date the date the alarm will be set at
+     */
+    public void setAlarm(Date date)
+    {
+        if(mRowId != null) {
+            int reqCode = Integer.valueOf(mRowId.intValue());
+
+            mIntent = new Intent(NoteDetail.this, MyAlarmReceiver.class);
+            mIntent.putExtra(NotesDbAdapter.KEY_ROW_ID, mRowId);
+            mPendingIntent = PendingIntent.getBroadcast(this, reqCode, mIntent, PendingIntent.FLAG_ONE_SHOT);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC, date.getTime(), mPendingIntent);
+
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.alarmSetMSG) + MyDateUtils.getStringFromDate(date),
+                    Toast.LENGTH_LONG).show();
+
         }
     }
 
 
-
-
-
-
-
-
-
-    public void setAlarm(Date alarm)
-    {
-
-            Log.d("NoteDetail.java", "inside setAlarm()");
-            Log.d("NoteDetail.java", "mAlarmTimeValue is " + mAlarmTimeValue.getText());
-
-
-
-
-            // Set an alarm only if the time is in the future
-            if(alarm.getTime() > System.currentTimeMillis() && mRowId != null) {
-                int reqCode = Integer.valueOf(mRowId.intValue());
-
-                mIntent = new Intent(NoteDetail.this, MyAlarmReceiver.class);
-                mIntent.putExtra(NotesDbAdapter.KEY_ROW_ID, mRowId);
-                mPendingIntent = PendingIntent.getBroadcast(this, reqCode, mIntent, PendingIntent.FLAG_ONE_SHOT);
-
-
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC, alarm.getTime(), mPendingIntent);
-
-                Toast.makeText(getApplicationContext(), "Alarm set at:\n" + alarm,
-                        Toast.LENGTH_LONG).show();
-
-            }
-            else
-            {
-                Toast.makeText(getApplicationContext(), "The alarm cannot be set:\nit is now or\nin the past.",
-                Toast.LENGTH_LONG).show();
-            }
-
-    }
-
+    /**
+     * Cancel an alarm for the current note
+     */
     public void cancelAlarm()
     {
         if(mRowId != null) {
@@ -261,121 +383,15 @@ public class NoteDetail extends  FragmentActivity {
 
             mPendingIntent.cancel();
 
-            Toast.makeText(getApplicationContext(), "Alarm correctly\n cancelled.",
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.alarmCancelledMSG),
                     Toast.LENGTH_LONG).show();
         }
     }
 
 
-    public void showAlarmTimeDialog()
-    {
-
-        final TimePickerDialog mTimePicker;
-        final DatePickerDialog mDatePicker;
-
-        final Date mCurrDate = Calendar.getInstance().getTime();
-        Log.d("NoteDetail.java", "mCurrDate is  " + mCurrDate);
-
-        mDatePicker = new DatePickerDialog(NoteDetail.this, new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int newYear, int newMonth, int newDay) {
-
-                Date mNewDate = MyDateUtils.getDateFromString(mAlarmTimeValue.getText().toString());
-
-                Log.d("NoteDetail.java", "1. mNewDate is  " + mNewDate);
-
-
-                mNewDate.setYear(newYear);
-                mNewDate.setMonth(newMonth);
-                mNewDate.setDate(newDay);
-
-                Log.d("NoteDetail.java", "2. mNewDate is  " + mNewDate);
-
-                setAlarmOnGUI(mNewDate);
-                setAlarm(mNewDate);
-
-            }
-        }, mCurrDate.getDay(), mCurrDate.getMonth(), mCurrDate.getYear());
-
-        mDatePicker.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                cancelAlarmOnGUI();
-            }
-        });
-        mDatePicker.setTitle("Select Alarm Date");
-
-
-        mTimePicker = new TimePickerDialog(NoteDetail.this, new TimePickerDialog.OnTimeSetListener() {
-
-            @Override
-            public void onTimeSet(TimePicker view, int newHour, int newMinute) {
-
-                Date mNewDate = new Date();
-
-                Log.d("NoteDetail.java", "3. mNewDate is  " + mNewDate);
-
-                mNewDate.setHours(newHour);
-                mNewDate.setMinutes(newMinute);
-
-                Log.d("NoteDetail.java", "4. mNewDate is  " + mNewDate);
-
-
-                setAlarmOnGUI(mNewDate);
-                Log.d("NoteDetail.java", "User selected data is " + mNewDate);
-
-            }
-        }, mCurrDate.getHours(), mCurrDate.getMinutes(), true);
-
-        mTimePicker.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (userHasSetTime()) {
-                    Log.d("NoteDetail.java", "Calling mDatePicker.show()");
-                    mDatePicker.show();
-                }
-                else
-                {
-                    Log.d("NoteDetail.java", "Calling cancelAlarmOnGUI()");
-                    cancelAlarmOnGUI();
-                }
-            }
-        });
-        mTimePicker.setTitle("Select Alarm Time");
-
-
-        mTimePicker.show();
-
-    }
-
-
-    public void setAlarmOnGUI(Date date)
-    {
-        Log.d("NoteDetail.java", "calling setAlarmOnGUI(Date date)" + date);
-
-        mAlarmTimeValue.setText(date.toString());
-        Log.d("NoteDetail.java", "mAlarmTimeValue after" + mAlarmTimeValue.getText().toString());
-
-    }
-
-    public void cancelAlarmOnGUI()
-    {
-        Log.d("NoteDetail.java", "calling cancelAlarmOnGUI()");
-
-        mAlarmSwitch.setChecked(false);
-        mAlarmTimeValue.setText("");
-    }
-
-    private boolean userHasSetTime()
-    {
-        if( mAlarmTimeValue.getText() != null || mAlarmTimeValue.getText() != "" )
-            return true;
-        else
-            return false;
-    }
-
-
+    /**
+     * Invoke the DB to populate all fields of the note
+     */
      private void populateFields() {
         if (mRowId != null) {
             Cursor note = mDbHelper.fetchNote(mRowId);
@@ -387,13 +403,12 @@ public class NoteDetail extends  FragmentActivity {
                     note.getColumnIndexOrThrow(NotesDbAdapter.KEY_CONTENT)));
             int priority = note.getInt(
                     note.getColumnIndexOrThrow(NotesDbAdapter.KEY_PRIORITY));
-            if(priority == Note.HIGH_PRIORITY)
+            if(priority == NotesDbAdapter.HIGH_PRIORITY)
                 mPriorityRadioGroup.check(R.id.highRadioButton);
-            else if(priority== Note.MEDIUM_PRIORITY)
+            else if(priority== NotesDbAdapter.MEDIUM_PRIORITY)
                 mPriorityRadioGroup.check(R.id.mediumRadioButton);
             else
                 mPriorityRadioGroup.check(R.id.lowRadioButton);
-
 
             String currAlarm = note.getString(
                     note.getColumnIndexOrThrow(NotesDbAdapter.KEY_ALARM));
@@ -406,21 +421,22 @@ public class NoteDetail extends  FragmentActivity {
                 mAlarmSwitch.setChecked(false);
                 mAlarmTimeValue.setVisibility(View.GONE);
             }
-
         }
+
     }
 
 
-
+    /**
+     * Save the note fields on DB
+     */
     private void saveState() {
         String title = mTitleText.getText().toString();
         String content = mContentText.getText().toString();
         int priority = getPriorityFromRadioGroup();
 
         String alarm;
-        if(mAlarmSwitch.isChecked()) {
+        if(mAlarmSwitch.isChecked())
             alarm = mAlarmTimeValue.getText().toString();
-        }
         else
             alarm = null;
 
@@ -428,12 +444,17 @@ public class NoteDetail extends  FragmentActivity {
             long id = mDbHelper.createNote(title, content, priority, alarm);
             if (id > 0) {
                 mRowId = id;
+                populateFields();
             }
         } else {
             mDbHelper.updateNote(mRowId, title, content, priority, alarm);
         }
     }
 
+
+    /**
+     * Get the selected value from the priority checkbox group
+     */
     int getPriorityFromRadioGroup(){
         int checkedRadioButtonId = mPriorityRadioGroup.getCheckedRadioButtonId();
         View radioButton = mPriorityRadioGroup.findViewById(checkedRadioButtonId);
@@ -441,7 +462,11 @@ public class NoteDetail extends  FragmentActivity {
     }
 
 
-
+    /**
+     * Change the background colour of the note according to its priority
+     *
+     * @param  priority can be HIGH, MEDIUM, LOW
+     */
     void changeColour(int priority){
         int backgroundColor, sectionColor;
 
@@ -450,12 +475,12 @@ public class NoteDetail extends  FragmentActivity {
         LinearLayout priorityWrapper = (LinearLayout) findViewById(R.id.priorityWrapper);
         LinearLayout alarmWrapper = (LinearLayout) findViewById(R.id.alarmWrapper);
 
-        if(priority == Note.HIGH_PRIORITY) {
+        if(priority == NotesDbAdapter.HIGH_PRIORITY) {
             backgroundColor = getResources().getColor(R.color.redDark);
             sectionColor = getResources().getColor(R.color.white);
 
         }
-        else if(priority == Note.MEDIUM_PRIORITY)
+        else if(priority == NotesDbAdapter.MEDIUM_PRIORITY)
         {
             backgroundColor = getResources().getColor(R.color.orangeDark);
             sectionColor = getResources().getColor(R.color.white);
@@ -474,39 +499,37 @@ public class NoteDetail extends  FragmentActivity {
         alarmWrapper.setBackgroundColor(sectionColor);
     }
 
+
     void updateBackgroundColour(){
         int priority = getPriorityFromRadioGroup();
         changeColour(priority);
     }
 
 
-    void dismissAlarmPopup()
+    /**
+     * Check if the current note is urgent
+     *
+     * @return true if it is urgent, false otherwise
+     */
+    public boolean isNoteUrgent()
     {
-
-
-        AlertDialog.Builder mBuilder = null;
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            mBuilder = new AlertDialog.Builder(NoteDetail.this);
-        } else {
-            mBuilder = new AlertDialog.Builder(NoteDetail.this, AlertDialog.THEME_HOLO_LIGHT);
-        }
-
-        AlertDialog mAlertDialog = mBuilder.create();
-
-        mAlertDialog.setMessage("Time is over,\ndismiss alarm.");
-        mAlertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                cancelAlarm();
-                cancelAlarmOnGUI();
-            }
-        });
-        mAlertDialog.show();
-
+        if(getPriorityFromRadioGroup() == 0)
+            return true;
+        else
+            return false;
     }
 
 
-
-
+    /**
+     * Update the GUI according to the note priority: if it is urgent the
+     * alarm setter is shown, otherwisr is hidden
+     *
+     * @param isUrgent determine if the currentNote is urgent or not
+     */
+    public void showAlarmSetter(boolean isUrgent){
+        if(isUrgent)
+            findViewById(R.id.alarmWrapper).setVisibility(View.VISIBLE);
+        else
+            findViewById(R.id.alarmWrapper).setVisibility(View.GONE);
+    }
 }

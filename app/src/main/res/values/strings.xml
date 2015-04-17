@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
+
     <string name="app_name">Notes</string>
     <string name="no_notes">No note.</string>
     <string name="menu_insert">Add New Note</string>
@@ -11,12 +13,29 @@
     <string name="new_note">New Note</string>
 
     <string name="priority">Priority</string>
-    <string name="mediumPriority">Medium</string>
-    <string name="lowPriority">Low</string>
-    <string name="highPriority">High</string>
+    <string name="mediumPriority">Important</string>
+    <string name="lowPriority">Normal</string>
+    <string name="highPriority">Urgent</string>
     <string name="alarm">Alarm</string>
     <string name="alarmSwitch">Set Alarm</string>
     <string name="alarmTime">Set Time</string>
 
+    // Switch button
+    <string name="setButton">SET</string>
+    <string name="cancelButton">CANCEL</string>
+
+    // Toast Notifications
+    <string name="alarmInThePastMSG">The alarm cannot be set:\nit is now or in the past.</string>
+    <string name="alarmSetMSG">Alarm set at:\n</string>
+    <string name="alarmCancelledMSG">Alarm cancelled.</string>
+    <string name="alarmDismissedMSG">Alarm dismissed.</string>
+
+    // Dismiss alarm pop-up
+    <string name="dismissAlarmMSG">Time is over:\n alarm will be dismissed.</string>
+    <string name="OK">OK</string>
+
+    // Top notification
+    <string name="noteReminderMSG">Note Reminder</string>
+    <string name="noteReminderMessageMSG">A note requires you attention!</string>
 
 </resources>

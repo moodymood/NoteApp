@@ -1,55 +1,39 @@
 package com.swansea.uni.m06.id803623;
 
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
- * Created by moody on 12/04/15.
+ * MyDateUtils is an utility class which manages simple operations on Dates
  */
 public class MyDateUtils {
 
-    public static Date getDateFromString(String date) {
+    private static SimpleDateFormat format = new SimpleDateFormat( "HH:mm, dd/MMM/yy");
 
-
-
-
-
-        SimpleDateFormat readFormat = new SimpleDateFormat( "EEE HH:mm, dd/MMM/yy");
-        SimpleDateFormat writeFormat = new SimpleDateFormat( "HH:mm, dd/MMM/yy");
-
+    /**
+     * @param dateString is the String to be converted
+     * @return a formatted Date given the passed String according to format
+     */
+    public static Date getDateFromString(CharSequence dateString) {
 
         try {
-            return readFormat.parse(date);
+            Date mNewDate = format.parse(String.valueOf(dateString));
+            return mNewDate;
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
         }
     }
 
+    /**
+     * @param date is the Date to be converted
+     * @return a formatted String for the passed Date according to format
+     */
     public static String getStringFromDate(Date date) {
-
-        SimpleDateFormat readFormat = new SimpleDateFormat( "EEE HH:mm, dd/MMM/yy");
-
-        return readFormat.format(date);
-
+        return format.format(date);
     }
 
-    public static Date getCurrentTime()
-    {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm, dd/MMM/yy", Locale.ENGLISH);
-
-        try {
-            return formatter.parse(Calendar.getInstance().getTime().toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
 
 

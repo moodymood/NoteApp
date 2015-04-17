@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <integer name="note_title_maxLength">30</integer>
+    <integer name="note_content_maxLines">5</integer>
+
+</resources>

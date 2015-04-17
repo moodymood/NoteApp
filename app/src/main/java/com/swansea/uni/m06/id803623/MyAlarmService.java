@@ -7,16 +7,13 @@ import android.os.IBinder;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
 import android.util.Log;
 
 
 public class MyAlarmService extends Service
 {
 
-    private NotificationManager mManager;
+
 
     @Override
     public IBinder onBind(Intent arg0)
@@ -36,24 +33,29 @@ public class MyAlarmService extends Service
     {
         super.onStart(intent, startId);
 
-        mManager = (NotificationManager) this.getApplicationContext().getSystemService(this.getApplicationContext().NOTIFICATION_SERVICE);
-        Intent myIntent = new Intent(this.getApplicationContext(),NoteDetail.class);
+        String NOTIFICATION_TITLE = getResources().getString(R.string.noteReminderMSG);
+        String NOTIFICATION_MSG = getResources().getString(R.string.noteReminderMessageMSG);
+
         Long mRowId = intent.getExtras().getLong(NotesDbAdapter.KEY_ROW_ID);
         int reqCode = mRowId.intValue();
 
-        myIntent.putExtra(NotesDbAdapter.KEY_ROW_ID, mRowId);
-        myIntent.putExtra("alarm", true);
-        Log.d("MyAlarmService", "id" + mRowId);
+        NotificationManager mManager = (NotificationManager)
+                this.getApplicationContext().getSystemService(this.getApplicationContext().NOTIFICATION_SERVICE);
+        Intent mIntent = new Intent(this.getApplicationContext(), NoteDetail.class);
+        mIntent.putExtra(NotesDbAdapter.KEY_ROW_ID, mRowId);
 
 
-        Notification notification = new Notification(R.drawable.ic_launcher,"Note Reminder", System.currentTimeMillis());
-        myIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Notification mNotification = new Notification(R.drawable.ic_launcher, NOTIFICATION_TITLE,
+                System.currentTimeMillis());
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        PendingIntent pendingNotificationIntent = PendingIntent.getActivity( this.getApplicationContext(),reqCode, myIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notification.setLatestEventInfo(this.getApplicationContext(), "Note Reminder", "A note requires you attention!", pendingNotificationIntent);
+        PendingIntent mPendingNotificationIntent = PendingIntent.getActivity(
+                this.getApplicationContext(), reqCode, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mNotification.flags |= Notification.FLAG_AUTO_CANCEL;
+        mNotification.setLatestEventInfo(this.getApplicationContext(), NOTIFICATION_TITLE,
+                NOTIFICATION_MSG, mPendingNotificationIntent);
 
-        mManager.notify(reqCode, notification);
+        mManager.notify(reqCode, mNotification);
     }
 
     @Override

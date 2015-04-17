@@ -4,43 +4,39 @@
     android:id="@+id/mainWrapper"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:baselineAligned="false"
-    android:background="#ffffa000">
+    android:baselineAligned="false">
 
     // Title + Content
-
     <LinearLayout android:id="@+id/titleAndContentWrapper"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="#5affa000"
+        android:layout_margin="@dimen/external_wrapper_margin"
         android:clickable="true">
-
 
         // Note Title
         <LinearLayout android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/external_wrapper_margin"
             android:clickable="true">
 
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title" />
+                android:text="@string/title"
+                android:maxLines="1"/>
             <EditText android:id="@+id/titleEditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:inputType="text"
-                android:layout_gravity="top" />
+                android:maxLength="@integer/note_title_maxLength" />
         </LinearLayout>
 
         // Note Content
         <LinearLayout android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_margin="@dimen/external_wrapper_margin">
 
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,12 +45,9 @@
             <EditText android:id="@+id/contentEditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:scrollbars="vertical"
-                android:inputType="text"
-                android:layout_gravity="top"
-                android:nestedScrollingEnabled="false"
-                android:maxLines="10" />
+                android:inputType="textMultiLine"
+                android:maxLines="@integer/note_content_maxLines"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -65,9 +58,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="#5affa000"
-        android:padding="10dp">
+        android:layout_margin="@dimen/external_wrapper_margin"
+        android:padding="@dimen/external_wrapper_padding">
 
         <TextView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,31 +69,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_alignParentLeft="true"
             android:layout_gravity="center_horizontal">
 
-            <RadioButton
+            <RadioButton android:id="@+id/highRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/checkBox_marginRight"
                 android:text="@string/highPriority"
-                android:id="@+id/highRadioButton"
-                android:layout_gravity="center_horizontal"
-                android:checked="true" />
+                android:checked="true"
+                android:clickable="true" />
 
-            <RadioButton
+            <RadioButton android:id="@+id/mediumRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/checkBox_marginRight"
                 android:text="@string/mediumPriority"
-                android:id="@+id/mediumRadioButton"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp" />
+                android:layout_gravity="center_horizontal"/>
 
-            <RadioButton
+            <RadioButton android:id="@+id/lowRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lowPriority"
-                android:id="@+id/lowRadioButton" />
+                android:layout_marginRight="@dimen/checkBox_marginRight"
+                android:text="@string/lowPriority"/>
         </RadioGroup>
 
     </LinearLayout>
@@ -112,57 +101,41 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="#5affa000"
-        android:padding="10dp">
+        android:layout_margin="@dimen/external_wrapper_margin"
+        android:padding="@dimen/external_wrapper_smallPadding"
+        android:visibility="gone">
 
         <TextView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/alarm" />
 
-        // Alarm switch
-        <Switch
-            android:layout_width="203dp"
-            android:layout_height="wrap_content"
-            android:text="@string/alarmSwitch"
-            android:id="@+id/alarmSwitch"
-            android:checked="false" />
 
-        // Alarm time
-        <RelativeLayout android:id="@+id/alarmTimeWrapper"
+        // Alarm
+        <LinearLayout android:id="@+id/alarmTimeWrapper"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:visibility="gone">
+            android:layout_margin="@dimen/external_wrapper_margin">
 
-            <TextView android:id="@+id/alarmTimeString"
+            // Alarm switch
+            <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/alarmTime"
-                android:textSize="17dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:textColor="#000000" />
+                android:id="@+id/alarmSwitch"
+                android:checked="false"
+                android:textColor="@color/black"
+                android:textOff="@string/setButton"
+                android:textOn="@string/cancelButton"
+                android:layout_marginRight="@dimen/alarmSwitch_marginRight"/>
 
+            // Alarm time
             <TextView android:id="@+id/alarmTimeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17dp"
-                android:layout_alignTop="@+id/alarmTimeString"
-                android:layout_centerHorizontal="true"
-                android:textColor="#000000" />
+                style="@android:style/TextAppearance.Holo"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
-
-
-    <Button android:id="@+id/confirm"
-        android:text="@string/confirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal" />
 
 </LinearLayout><!-- From: file:/home/moody/AndroidStudioProjects/NoteApp/app/src/main/res/layout-v14/note_detail.xml -->

@@ -11,33 +11,45 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int defaultGrey=0x7f040000;
-        public static final int orangeDark=0x7f040001;
-        public static final int redDark=0x7f040002;
-        public static final int white=0x7f040003;
-        public static final int yellowDark=0x7f040004;
+        public static final int black=0x7f040000;
+        public static final int defaultGrey=0x7f040001;
+        public static final int orangeDark=0x7f040002;
+        public static final int redDark=0x7f040003;
+        public static final int white=0x7f040004;
+        public static final int yellowDark=0x7f040005;
+    }
+    public static final class dimen {
+        public static final int alarmSwitch_marginRight=0x7f050000;
+        public static final int checkBox_marginRight=0x7f050001;
+        public static final int external_wrapper_margin=0x7f050002;
+        public static final int external_wrapper_padding=0x7f050003;
+        public static final int external_wrapper_smallPadding=0x7f050004;
+        public static final int itemList_height=0x7f050005;
+        public static final int itemList_padding=0x7f050006;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int icon=0x7f020001;
     }
     public static final class id {
-        public static final int alarmSwitch=0x7f06000a;
-        public static final int alarmTimeString=0x7f06000c;
-        public static final int alarmTimeValue=0x7f06000d;
-        public static final int alarmTimeWrapper=0x7f06000b;
-        public static final int alarmWrapper=0x7f060009;
-        public static final int confirm=0x7f06000e;
-        public static final int contentEditText=0x7f060003;
-        public static final int highRadioButton=0x7f060006;
-        public static final int itemText=0x7f06000f;
-        public static final int lowRadioButton=0x7f060008;
-        public static final int mainWrapper=0x7f060000;
-        public static final int mediumRadioButton=0x7f060007;
-        public static final int priorityRadioGroup=0x7f060005;
-        public static final int priorityWrapper=0x7f060004;
-        public static final int titleAndContentWrapper=0x7f060001;
-        public static final int titleEditText=0x7f060002;
+        public static final int alarmSwitch=0x7f08000b;
+        public static final int alarmTimeValue=0x7f08000c;
+        public static final int alarmTimeWrapper=0x7f08000a;
+        public static final int alarmWrapper=0x7f080009;
+        public static final int contentEditText=0x7f080003;
+        public static final int highRadioButton=0x7f080006;
+        public static final int itemText=0x7f08000d;
+        public static final int lowRadioButton=0x7f080008;
+        public static final int mainWrapper=0x7f080000;
+        public static final int mediumRadioButton=0x7f080007;
+        public static final int priorityRadioGroup=0x7f080005;
+        public static final int priorityWrapper=0x7f080004;
+        public static final int titleAndContentWrapper=0x7f080001;
+        public static final int titleEditText=0x7f080002;
+    }
+    public static final class integer {
+        public static final int note_content_maxLines=0x7f060000;
+        public static final int note_title_maxLength=0x7f060001;
     }
     public static final class layout {
         public static final int note_detail=0x7f030000;
@@ -45,21 +57,31 @@ public final class R {
         public static final int notes_list=0x7f030002;
     }
     public static final class string {
-        public static final int alarm=0x7f050000;
-        public static final int alarmSwitch=0x7f050001;
-        public static final int alarmTime=0x7f050002;
-        public static final int app_name=0x7f050003;
-        public static final int body=0x7f050004;
-        public static final int confirm=0x7f050005;
-        public static final int edit_note=0x7f050006;
-        public static final int highPriority=0x7f050007;
-        public static final int lowPriority=0x7f050008;
-        public static final int mediumPriority=0x7f050009;
-        public static final int menu_delete=0x7f05000a;
-        public static final int menu_insert=0x7f05000b;
-        public static final int new_note=0x7f05000c;
-        public static final int no_notes=0x7f05000d;
-        public static final int priority=0x7f05000e;
-        public static final int title=0x7f05000f;
+        public static final int OK=0x7f070000;
+        public static final int alarm=0x7f070001;
+        public static final int alarmCancelledMSG=0x7f070002;
+        public static final int alarmDismissedMSG=0x7f070003;
+        public static final int alarmInThePastMSG=0x7f070004;
+        public static final int alarmSetMSG=0x7f070005;
+        public static final int alarmSwitch=0x7f070006;
+        public static final int alarmTime=0x7f070007;
+        public static final int app_name=0x7f070008;
+        public static final int body=0x7f070009;
+        public static final int cancelButton=0x7f07000a;
+        public static final int confirm=0x7f07000b;
+        public static final int dismissAlarmMSG=0x7f07000c;
+        public static final int edit_note=0x7f07000d;
+        public static final int highPriority=0x7f07000e;
+        public static final int lowPriority=0x7f07000f;
+        public static final int mediumPriority=0x7f070010;
+        public static final int menu_delete=0x7f070011;
+        public static final int menu_insert=0x7f070012;
+        public static final int new_note=0x7f070013;
+        public static final int no_notes=0x7f070014;
+        public static final int noteReminderMSG=0x7f070015;
+        public static final int noteReminderMessageMSG=0x7f070016;
+        public static final int priority=0x7f070017;
+        public static final int setButton=0x7f070018;
+        public static final int title=0x7f070019;
     }
 }

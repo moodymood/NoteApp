@@ -1,0 +1,226 @@
+[1mdiff --git a/app/src/main/java/com/swansea/uni/m06/id803623/NoteDetail.java b/app/src/main/java/com/swansea/uni/m06/id803623/NoteDetail.java[m
+[1mindex 0990e1b..2ea8577 100644[m
+[1m--- a/app/src/main/java/com/swansea/uni/m06/id803623/NoteDetail.java[m
+[1m+++ b/app/src/main/java/com/swansea/uni/m06/id803623/NoteDetail.java[m
+[36m@@ -59,6 +59,9 @@[m [mpublic class NoteDetail extends  FragmentActivity {[m
+     private TextView mAlarmTimeValue;[m
+     private Switch mAlarmSwitch;[m
+ [m
+[32m+[m[32m    private DatePickerDialog mDatePicker;[m
+[32m+[m
+[32m+[m[32m    private TimePickerDialog mTimePicker;[m
+ [m
+ [m
+     private Long mRowId;[m
+[36m@@ -99,7 +102,6 @@[m [mpublic class NoteDetail extends  FragmentActivity {[m
+ [m
+         setListeners();[m
+ [m
+[31m-        setAlarmPopup();[m
+     }[m
+ [m
+     @Override[m
+[36m@@ -198,35 +200,12 @@[m [mpublic class NoteDetail extends  FragmentActivity {[m
+         });[m
+     }[m
+ [m
+[31m-    public void setAlarmPopup()[m
+[31m-    {[m
+[31m-        Log.d("NoteDetails.java", "***************Back from alarm*************");[m
+[31m-        Bundle extras = getIntent().getExtras();[m
+[31m-        if (extras != null) {[m
+[31m-            if(extras.getBoolean("alarm"))[m
+[31m-                dismissAlarmPopup();[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+ [m
+ [m
+[31m-[m
+[31m-[m
+[31m-    public void setAlarm(Date alarm)[m
+[32m+[m[32m    public void setAlarm(Date date)[m
+     {[m
+[31m-[m
+[31m-            Log.d("NoteDetail.java", "inside setAlarm()");[m
+[31m-            Log.d("NoteDetail.java", "mAlarmTimeValue is " + mAlarmTimeValue.getText());[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+             // Set an alarm only if the time is in the future[m
+[31m-            if(alarm.getTime() > System.currentTimeMillis() && mRowId != null) {[m
+[32m+[m[32m            if(mRowId != null) {[m
+                 int reqCode = Integer.valueOf(mRowId.intValue());[m
+ [m
+                 mIntent = new Intent(NoteDetail.this, MyAlarmReceiver.class);[m
+[36m@@ -235,17 +214,13 @@[m [mpublic class NoteDetail extends  FragmentActivity {[m
+ [m
+ [m
+                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);[m
+[31m-                alarmManager.set(AlarmManager.RTC, alarm.getTime(), mPendingIntent);[m
+[32m+[m[32m                alarmManager.set(AlarmManager.RTC, date.getTime(), mPendingIntent);[m
+ [m
+[31m-                Toast.makeText(getApplicationContext(), "Alarm set at:\n" + alarm,[m
+[32m+[m[32m                Toast.makeText(getApplicationContext(), getResources().getString(R.string.alarmSetMSG) + MyDateUtils.getStringFromDate(date),[m
+                         Toast.LENGTH_LONG).show();[m
+ [m
+             }[m
+[31m-            else[m
+[31m-            {[m
+[31m-                Toast.makeText(getApplicationContext(), "The alarm cannot be set:\nit is now or\nin the past.",[m
+[31m-                Toast.LENGTH_LONG).show();[m
+[31m-            }[m
+[32m+[m
+ [m
+     }[m
+ [m
+[36m@@ -261,7 +236,7 @@[m [mpublic class NoteDetail extends  FragmentActivity {[m
+ [m
+             mPendingIntent.cancel();[m
+ [m
+[31m-            Toast.makeText(getApplicationContext(), "Alarm correctly\n cancelled.",[m
+[32m+[m[32m            Toast.makeText(getApplicationContext(), getResources().getString(R.string.alarmCancelledMSG),[m
+                     Toast.LENGTH_LONG).show();[m
+         }[m
+     }[m
+[36m@@ -270,41 +245,8 @@[m [mpublic class NoteDetail extends  FragmentActivity {[m
+     public void showAlarmTimeDialog()[m
+     {[m
+ [m
+[31m-        final TimePickerDialog mTimePicker;[m
+[31m-        final DatePickerDialog mDatePicker;[m
+[31m-[m
+[31m-        final Date mCurrDate = Calendar.getInstance().getTime();[m
+[31m-        Log.d("NoteDetail.java", "mCurrDate is  " + mCurrDate);[m
+[31m-[m
+[31m-        mDatePicker = new DatePickerDialog(NoteDetail.this, new DatePickerDialog.OnDateSetListener() {[m
+[31m-[m
+[31m-            @Override[m
+[31m-            public void onDateSet(DatePicker view, int newYear, int newMonth, int newDay) {[m
+[31m-[m
+[31m-                Date mNewDate = MyDateUtils.getDateFromString(mAlarmTimeValue.getText().toString());[m
+[31m-[m
+[31m-                Log.d("NoteDetail.java", "1. mNewDate is  " + mNewDate);[m
+[31m-[m
+[31m-[m
+[31m-                mNewDate.setYear(newYear);[m
+[31m-                mNewDate.setMonth(newMonth);[m
+[31m-                mNewDate.setDate(newDay);[m
+[31m-[m
+[31m-                Log.d("NoteDetail.java", "2. mNewDate is  " + mNewDate);[m
+[31m-[m
+[31m-                setAlarmOnGUI(mNewDate);[m
+[31m-                setAlarm(mNewDate);[m
+[31m-[m
+[31m-            }[m
+[31m-        }, mCurrDate.getDay(), mCurrDate.getMonth(), mCurrDate.getYear());[m
+[31m-[m
+[31m-        mDatePicker.setOnCancelListener(new DialogInterface.OnCancelListener() {[m
+[31m-            @Override[m
+[31m-            public void onCancel(DialogInterface dialog) {[m
+[31m-                cancelAlarmOnGUI();[m
+[31m-            }[m
+[31m-        });[m
+[31m-        mDatePicker.setTitle("Select Alarm Date");[m
+[32m+[m[32m        final Calendar mCalendar = Calendar.getInstance();[m
+[32m+[m[32m        mCalendar.setTime(new Date(System.currentTimeMillis()));[m
+ [m
+ [m
+         mTimePicker = new TimePickerDialog(NoteDetail.this, new TimePickerDialog.OnTimeSetListener() {[m
+[36m@@ -312,32 +254,22 @@[m [mpublic class NoteDetail extends  FragmentActivity {[m
+             @Override[m
+             public void onTimeSet(TimePicker view, int newHour, int newMinute) {[m
+ [m
+[31m-                Date mNewDate = new Date();[m
+[31m-[m
+[31m-                Log.d("NoteDetail.java", "3. mNewDate is  " + mNewDate);[m
+[31m-[m
+[31m-                mNewDate.setHours(newHour);[m
+[31m-                mNewDate.setMinutes(newMinute);[m
+[32m+[m[32m                mCalendar.set(Calendar.HOUR_OF_DAY, newHour);[m
+[32m+[m[32m                mCalendar.set(Calendar.MINUTE, newMinute);[m
+ [m
+[31m-                Log.d("NoteDetail.java", "4. mNewDate is  " + mNewDate);[m
+[31m-[m
+[31m-[m
+[31m-                setAlarmOnGUI(mNewDate);[m
+[31m-                Log.d("NoteDetail.java", "User selected data is " + mNewDate);[m
+[32m+[m[32m                setAlarmOnGUI(mCalendar.getTime());[m
+ [m
+             }[m
+[31m-        }, mCurrDate.getHours(), mCurrDate.getMinutes(), true);[m
+[32m+[m[32m        }, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);[m
+ [m
+         mTimePicker.setOnDismissListener(new DialogInterface.OnDismissListener() {[m
+             @Override[m
+             public void onDismiss(DialogInterface dialog) {[m
+                 if (userHasSetTime()) {[m
+[31m-                    Log.d("NoteDetail.java", "Calling mDatePicker.show()");[m
+                     mDatePicker.show();[m
+                 }[m
+                 else[m
+                 {[m
+[31m-                    Log.d("NoteDetail.java", "Calling cancelAlarmOnGUI()");[m
+                     cancelAlarmOnGUI();[m
+                 }[m
+             }[m
+[36m@@ -345,6 +277,35 @@[m [mpublic class NoteDetail extends  FragmentActivity {[m
+         mTimePicker.setTitle("Select Alarm Time");[m
+ [m
+ [m
+[32m+[m[32m        mDatePicker = new DatePickerDialog(NoteDetail.this, new DatePickerDialog.OnDateSetListener() {[m
+[32m+[m[32m            @Override[m
+[32m+[m[32m            public void onDateSet(DatePicker view, int newYear, int newMonth, int newDay) {[m
+[32m+[m
+[32m+[m[32m                mCalendar.setTime(MyDateUtils.getDateFromString(mAlarmTimeValue.getText()));[m
+[32m+[m[32m                mCalendar.set(newYear, newMonth, newDay);[m
+[32m+[m
+[32m+[m[32m                if(mCalendar.getTimeInMillis() <= System.currentTimeMillis())[m
+[32m+[m[32m                {[m
+[32m+[m[32m                    cancelAlarmOnGUI();[m
+[32m+[m[32m                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.alarmInThePastMSG),[m
+[32m+[m[32m                            Toast.LENGTH_LONG).show();[m
+[32m+[m[32m                }[m
+[32m+[m[32m                else {[m
+[32m+[m[32m                    setAlarmOnGUI(mCalendar.getTime());[m
+[32m+[m[32m                    setAlarm(mCalendar.getTime());[m
+[32m+[m[32m                }[m
+[32m+[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));[m
+[32m+[m
+[32m+[m[32m        mDatePicker.setOnCancelListener(new DialogInterface.OnCancelListener() {[m
+[32m+[m[32m            @Override[m
+[32m+[m[32m            public void onCancel(DialogInterface dialog) {[m
+[32m+[m[32m                cancelAlarmOnGUI();[m
+[32m+[m[32m            }[m
+[32m+[m[32m        });[m
+[32m+[m[32m        mDatePicker.setTitle("Select Alarm Date");[m
+[32m+[m
+         mTimePicker.show();[m
+ [m
+     }[m
+[36m@@ -352,17 +313,11 @@[m [mpublic class NoteDetail extends  FragmentActivity {[m
+ [m
+     public void setAlarmOnGUI(Date date)[m
+     {[m
+[31m-        Log.d("NoteDetail.java", "calling setAlarmOnGUI(Date date)" + date);[m
+[31m-[m
+[31m-        mAlarmTimeValue.setText(date.toString());[m
+[31m-        Log.d("NoteDetail.java", "mAlarmTimeValue after" + mAlarmTimeValue.getText().toString());[m
+[31m-[m
+[32m+[m[32m        mAlarmTimeValue.setText(MyDateUtils.getStringFromDate(date));[m
+     }[m
+ [m
+     public void cancelAlarmOnGUI()[m
+     {[m
+[31m-        Log.d("NoteDetail.java", "calling cancelAlarmOnGUI()");[m
+[31m-[m
+         mAlarmSwitch.setChecked(false);[m
+         mAlarmTimeValue.setText("");[m
+     }[m
