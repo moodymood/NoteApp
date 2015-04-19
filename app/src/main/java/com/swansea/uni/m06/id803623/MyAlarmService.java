@@ -7,13 +7,10 @@ import android.os.IBinder;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.util.Log;
 
 
 public class MyAlarmService extends Service
 {
-
-
 
     @Override
     public IBinder onBind(Intent arg0)
@@ -43,7 +40,6 @@ public class MyAlarmService extends Service
                 this.getApplicationContext().getSystemService(this.getApplicationContext().NOTIFICATION_SERVICE);
         Intent mIntent = new Intent(this.getApplicationContext(), NoteDetail.class);
         mIntent.putExtra(NotesDbAdapter.KEY_ROW_ID, mRowId);
-
 
         Notification mNotification = new Notification(R.drawable.ic_launcher, NOTIFICATION_TITLE,
                 System.currentTimeMillis());

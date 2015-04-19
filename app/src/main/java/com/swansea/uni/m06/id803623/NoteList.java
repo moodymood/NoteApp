@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,6 +100,7 @@ public class NoteList extends ListActivity {
         MySimpleCursorAdapter notes =
                 new MySimpleCursorAdapter(this, R.layout.notes_item, notesCursor, from, to);
         setListAdapter(notes);
+
     }
 
 

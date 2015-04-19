@@ -23,6 +23,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -36,8 +38,6 @@ public class NoteDetail extends  FragmentActivity {
     private RadioGroup mPriorityRadioGroup;
     private TextView mAlarmTimeValue;
     private Switch mAlarmSwitch;
-
-
 
     private Long mRowId;
     private NotesDbAdapter mDbHelper;
@@ -82,6 +82,9 @@ public class NoteDetail extends  FragmentActivity {
             if(alarmIsExpired())
                 showDismissPopup();
         }
+        else{
+            showAlarmSetter(false);
+        }
 
     }
 
@@ -123,6 +126,7 @@ public class NoteDetail extends  FragmentActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(NotesDbAdapter.KEY_ROW_ID, mRowId);
+        saveState();
     }
 
 
@@ -251,8 +255,6 @@ public class NoteDetail extends  FragmentActivity {
         mCalendar.setTime(new Date(System.currentTimeMillis()));
 
 
-
-
         mDatePicker = new DatePickerDialog(NoteDetail.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int newYear, int newMonth, int newDay) {
@@ -318,6 +320,7 @@ public class NoteDetail extends  FragmentActivity {
      */
     public void setAlarmOnGUI(Date date)
     {
+        mAlarmSwitch.setChecked(true);
         mAlarmTimeValue.setText(MyDateUtils.getStringFromDate(date));
     }
 
@@ -342,7 +345,6 @@ public class NoteDetail extends  FragmentActivity {
         CharSequence charSequence = mAlarmTimeValue.getText();
         if(charSequence != null)
             if( !String.valueOf(charSequence).isEmpty()) {
-                Log.d("NoteDetails", "charSequence: " + charSequence);
                 return true;
             }
             else
@@ -421,14 +423,9 @@ public class NoteDetail extends  FragmentActivity {
             String currAlarm = note.getString(
                     note.getColumnIndexOrThrow(NotesDbAdapter.KEY_ALARM));
             if (currAlarm != null) {
-                mAlarmSwitch.setChecked(true);
-                mAlarmTimeValue.setVisibility(View.VISIBLE);
-                mAlarmTimeValue.setText(currAlarm);
+                setAlarmOnGUI(MyDateUtils.getDateFromString(currAlarm));
             }
-            else {
-                mAlarmSwitch.setChecked(false);
-                mAlarmTimeValue.setVisibility(View.GONE);
-            }
+
         }
 
     }

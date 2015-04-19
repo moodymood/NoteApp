@@ -12,33 +12,38 @@ public final class R {
     }
     public static final class color {
         public static final int black=0x7f040000;
-        public static final int defaultGrey=0x7f040001;
-        public static final int orangeDark=0x7f040002;
-        public static final int redDark=0x7f040003;
-        public static final int white=0x7f040004;
-        public static final int yellowDark=0x7f040005;
+        public static final int darkGray=0x7f040001;
+        public static final int defaultGrey=0x7f040002;
+        public static final int orangeDark=0x7f040003;
+        public static final int redDark=0x7f040004;
+        public static final int white=0x7f040005;
+        public static final int yellowDark=0x7f040006;
     }
     public static final class dimen {
         public static final int alarmSwitch_marginRight=0x7f050000;
-        public static final int checkBox_marginRight=0x7f050001;
-        public static final int external_wrapper_margin=0x7f050002;
-        public static final int external_wrapper_padding=0x7f050003;
-        public static final int external_wrapper_smallPadding=0x7f050004;
-        public static final int itemList_height=0x7f050005;
-        public static final int itemList_padding=0x7f050006;
+        public static final int alarm_text_size=0x7f050001;
+        public static final int checkBox_marginRight=0x7f050002;
+        public static final int external_wrapper_margin=0x7f050003;
+        public static final int external_wrapper_padding=0x7f050004;
+        public static final int external_wrapper_smallPadding=0x7f050005;
+        public static final int itemList_font_size=0x7f050006;
+        public static final int itemList_height=0x7f050007;
+        public static final int itemList_padding=0x7f050008;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int icon=0x7f020001;
     }
     public static final class id {
-        public static final int alarmSwitch=0x7f08000b;
-        public static final int alarmTimeValue=0x7f08000c;
-        public static final int alarmTimeWrapper=0x7f08000a;
+        public static final int alarmSwitch=0x7f08000a;
+        public static final int alarmTimeString=0x7f08000c;
+        public static final int alarmTimeValue=0x7f08000d;
+        public static final int alarmTimeWrapper=0x7f08000b;
         public static final int alarmWrapper=0x7f080009;
+        public static final int confirm=0x7f08000e;
         public static final int contentEditText=0x7f080003;
         public static final int highRadioButton=0x7f080006;
-        public static final int itemText=0x7f08000d;
+        public static final int itemText=0x7f08000f;
         public static final int lowRadioButton=0x7f080008;
         public static final int mainWrapper=0x7f080000;
         public static final int mediumRadioButton=0x7f080007;
@@ -69,19 +74,23 @@ public final class R {
         public static final int body=0x7f070009;
         public static final int cancelButton=0x7f07000a;
         public static final int confirm=0x7f07000b;
-        public static final int dismissAlarmMSG=0x7f07000c;
-        public static final int edit_note=0x7f07000d;
-        public static final int highPriority=0x7f07000e;
-        public static final int lowPriority=0x7f07000f;
-        public static final int mediumPriority=0x7f070010;
-        public static final int menu_delete=0x7f070011;
-        public static final int menu_insert=0x7f070012;
-        public static final int new_note=0x7f070013;
-        public static final int no_notes=0x7f070014;
-        public static final int noteReminderMSG=0x7f070015;
-        public static final int noteReminderMessageMSG=0x7f070016;
-        public static final int priority=0x7f070017;
-        public static final int setButton=0x7f070018;
-        public static final int title=0x7f070019;
+        public static final int contentHint=0x7f07000c;
+        public static final int dismissAlarmMSG=0x7f07000d;
+        public static final int edit_note=0x7f07000e;
+        public static final int emptyList=0x7f07000f;
+        public static final int emptyString=0x7f070010;
+        public static final int highPriority=0x7f070011;
+        public static final int lowPriority=0x7f070012;
+        public static final int mediumPriority=0x7f070013;
+        public static final int menu_delete=0x7f070014;
+        public static final int menu_insert=0x7f070015;
+        public static final int new_note=0x7f070016;
+        public static final int no_notes=0x7f070017;
+        public static final int noteReminderMSG=0x7f070018;
+        public static final int noteReminderMessageMSG=0x7f070019;
+        public static final int priority=0x7f07001a;
+        public static final int setButton=0x7f07001b;
+        public static final int title=0x7f07001c;
+        public static final int titleHint=0x7f07001d;
     }
 }

@@ -41,6 +41,7 @@
     <string name="contentHint">Content here</string>
     <string name="dismissAlarmMSG">Time is over:\n alarm will be dismissed.</string>
     <string name="edit_note">Edit Note</string>
+    <string name="emptyList">You haven\'t added any note yet.</string>
     <string name="emptyString">*empty*</string>
     <string name="highPriority">Urgent</string>
     <string name="lowPriority">Normal</string>

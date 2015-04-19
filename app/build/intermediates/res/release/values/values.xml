@@ -3,18 +3,21 @@
     <!-- From: file:/home/moody/AndroidStudioProjects/NoteApp/app/src/main/res/values/colours.xml -->
     <eat-comment/>
     <color name="black">#000000</color>
+    <color name="darkGray">#82322829</color>
     <color name="defaultGrey">#5ad3c8c9</color>
     <color name="orangeDark">#dbf39308</color>
-    <color name="redDark">#b2f3481c</color>
+    <color name="redDark">#dce03b3f</color>
     <color name="white">#5affffff</color>
     <color name="yellowDark">#db6db142</color>
     <!-- From: file:/home/moody/AndroidStudioProjects/NoteApp/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="alarmSwitch_marginRight">20dp</dimen>
+    <dimen name="alarm_text_size">15dp</dimen>
     <dimen name="checkBox_marginRight">16dp</dimen>
     <dimen name="external_wrapper_margin">10dp</dimen>
     <dimen name="external_wrapper_padding">10dp</dimen>
     <dimen name="external_wrapper_smallPadding">5dp</dimen>
+    <dimen name="itemList_font_size">18dp</dimen>
     <dimen name="itemList_height">40dp</dimen>
     <dimen name="itemList_padding">5dp</dimen>
     <!-- From: file:/home/moody/AndroidStudioProjects/NoteApp/app/src/main/res/values/integers.xml -->
@@ -35,8 +38,11 @@
     <string name="body">Content</string>
     <string name="cancelButton">CANCEL</string>
     <string name="confirm">Save</string>
+    <string name="contentHint">Content here</string>
     <string name="dismissAlarmMSG">Time is over:\n alarm will be dismissed.</string>
     <string name="edit_note">Edit Note</string>
+    <string name="emptyList">You haven\'t added any note yet.</string>
+    <string name="emptyString">*empty*</string>
     <string name="highPriority">Urgent</string>
     <string name="lowPriority">Normal</string>
     <string name="mediumPriority">Important</string>
@@ -49,4 +55,5 @@
     <string name="priority">Priority</string>
     <string name="setButton">SET</string>
     <string name="title">Title</string>
+    <string name="titleHint">Title here</string>
 </resources>

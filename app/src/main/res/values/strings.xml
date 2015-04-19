@@ -44,6 +44,7 @@
     <string name="contentHint">Content here</string>
 
     <string name="emptyString">*empty*</string>
+    <string name="emptyList">You haven\'t added any note yet.</string>
 
 
 </resources>

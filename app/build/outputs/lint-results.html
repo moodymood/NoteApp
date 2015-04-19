@@ -18,18 +18,26 @@ document.getElementById(id+'Link').style.display = 'none';
 <body>
 <h1>Lint Report</h1>
 <div class="titleSeparator"></div>
-Check performed at Fri Apr 17 16:46:05 IST 2015.<br/>
-0 errors and 16 warnings found:<br/><br/>
+Check performed at Sun Apr 19 12:26:14 IST 2015.<br/>
+1 errors and 23 warnings found:<br/><br/>
 <table class="overview">
 <tr><td></td><td class="categoryColumn"><a href="#Correctness">Correctness</a>
 </td></tr>
 <tr>
-<td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-error.png" alt="Error" />
+<a href="#NewApi">NewApi: Calling new methods on older versions</a>
+</td></tr>
+<tr>
+<td class="countColumn">2</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#SimpleDateFormat">SimpleDateFormat: Implied locale in date format</a>
 </td></tr>
 <tr>
-<td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<td class="countColumn">2</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#ExtraText">ExtraText: Extraneous text in resource files</a>
+</td></tr>
+<tr>
+<td class="countColumn">2</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<a href="#SpUsage">SpUsage: Using <code>dp</code> instead of <code>sp</code> for text sizes</a>
 </td></tr>
 <tr><td></td><td class="categoryColumn"><a href="#Security">Security</a>
 </td></tr>
@@ -49,10 +57,18 @@ Check performed at Fri Apr 17 16:46:05 IST 2015.<br/>
 </td></tr>
 <tr>
 <td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<a href="#ObsoleteLayoutParam">ObsoleteLayoutParam: Obsolete layout params</a>
+</td></tr>
+<tr>
+<td class="countColumn">2</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<a href="#InefficientWeight">InefficientWeight: Inefficient layout weight</a>
+</td></tr>
+<tr>
+<td class="countColumn">2</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#Overdraw">Overdraw: Overdraw: Painting regions more than once</a>
 </td></tr>
 <tr>
-<td class="countColumn">6</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<td class="countColumn">4</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#UnusedResources">UnusedResources: Unused resources</a>
 </td></tr>
 <tr><td></td><td class="categoryColumn"><a href="#Usability:Icons">Usability:Icons</a>
@@ -75,22 +91,60 @@ Check performed at Fri Apr 17 16:46:05 IST 2015.<br/>
 <td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#ButtonCase">ButtonCase: Cancel/OK dialog button capitalization</a>
 </td></tr>
+<tr><td></td><td class="categoryColumn"><a href="#Internationalization">Internationalization</a>
+</td></tr>
+<tr>
+<td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<a href="#RelativeOverlap">RelativeOverlap: Overlapping items in RelativeLayout</a>
+</td></tr>
 <tr><td></td><td class="categoryColumn"><a href="#MissingIssues">Disabled Checks (10)</a>
 </td></tr></table>
 <br/>
 <a name="Correctness"></a>
 <div class="category"><a href="#" title="Return to top">Correctness</a><div class="categorySeparator"></div>
 </div>
+<a name="NewApi"></a>
+<div class="issue">
+<div class="id"><a href="#" title="Return to top">NewApi: Calling new methods on older versions</a><div class="issueSeparator"></div>
+</div>
+<div class="warningslist">
+<span class="location"><a href="../intermediates/classes/debug/com/swansea/uni/m06/id803623/MyTimeDialog.class">../intermediates/classes/debug/com/swansea/uni/m06/id803623/MyTimeDialog.class</a></span>: <span class="message">Call requires API level 17 (current min is 14): <code>android.app.DialogFragment#getParentFragment</code></span><br />
+
+Applies to variants: debug<br/>
+Does <b>not</b> apply to variants: release<br/>
+</div>
+<div class="metadata">Note: This issue has an associated quickfix operation in Eclipse/ADT & Android Studio/IntelliJ&nbsp;<img alt="Fix" border="0" align="top" src="lint-results_files/lint-run.png" />
+<br>
+Priority: 6 / 10<br/>
+Category: Correctness</div>
+Severity: <span class="error">Error</span><div class="summary">
+Explanation: Calling new methods on older versions.</div>
+<div class="explanation">
+This check scans through all the Android API calls in the application and warns about any calls that are not available on <b>all</b> versions targeted by this application (according to its minimum SDK attribute in the manifest).<br/>
+<br/>
+If you really want to use this API and don't need to support older devices just set the <code>minSdkVersion</code> in your <code>build.gradle</code> or <code>AndroidManifest.xml</code> files.<br/>
+If your code is <b>deliberately</b> accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the <code>@TargetApi</code> annotation specifying the local minimum SDK to apply, such as <code>@TargetApi(11)</code>, such that this check considers 11 rather than your manifest file's minimum SDK as the required API level.<br/>
+<br/>
+If you are deliberately setting <code>android:</code> attributes in style definitions, make sure you place this in a <code>values-vNN</code> folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.<br/>
+<br/>
+Similarly, you can use tools:targetApi="11" in an XML file to indicate that the element will only be inflated in an adequate context.
+</div>
+<br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "NewApi" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
+</div>
 <a name="SimpleDateFormat"></a>
 <div class="issue">
 <div class="id"><a href="#" title="Return to top">SimpleDateFormat: Implied locale in date format</a><div class="issueSeparator"></div>
 </div>
 <div class="warningslist">
+<span class="location"><a href="../intermediates/classes/release/com/swansea/uni/m06/id803623/MyDate.class">../intermediates/classes/release/com/swansea/uni/m06/id803623/MyDate.class</a></span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br />
+
+Applies to variants: release<br/>
+Does <b>not</b> apply to variants: debug<br/>
 <span class="location"><a href="../../src/main/java/com/swansea/uni/m06/id803623/MyDateUtils.java">../../src/main/java/com/swansea/uni/m06/id803623/MyDateUtils.java</a>:12</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
 <span class="lineno">   9</span>  */
 <span class="lineno">  10</span> public class MyDateUtils {
 <span class="lineno">  11</span> 
-<span class="lineno">  12</span>     private static <span class="errorspan">SimpleDateFormat format = new SimpleDateFormat( "HH:mm, dd/MMM/yy");</span>
+<span class="lineno">  12</span>     private static <span class="errorspan">SimpleDateFormat format = new SimpleDateFormat( "HH:mm dd/MMM/yy");</span>
 <span class="lineno">  13</span> 
 <span class="lineno">  14</span>     /**
 </pre>
@@ -120,6 +174,14 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
 <span class="lineno">  12</span>         android:layout_width="match_parent"
 <span class="lineno">  13</span>         android:layout_height="wrap_content"
 </pre>
+<span class="location"><a href="../../src/main/res/layout/note_detail.xml">../../src/main/res/layout/note_detail.xml</a>:12</span>: <span class="message">Unexpected text found in layout file: "// Title + Content"</span><br /><pre class="errorlines">
+<span class="lineno">   9</span> 
+<span class="lineno">  10</span>     // Tit<span class="errorspan">le + Content</span>
+<span class="lineno">  11</span> 
+<span class="lineno">  12</span>     &lt;LinearLayout android:id="@+id/titleAndContentWrapper"
+<span class="lineno">  13</span>         android:orientation="vertical"
+<span class="lineno">  14</span>         android:layout_width="match_parent"
+</pre>
 </div>
 <div class="metadata">Priority: 3 / 10<br/>
 Category: Correctness</div>
@@ -129,6 +191,56 @@ Explanation: Extraneous text in resource files.</div>
 Layout resource files should only contain elements and attributes. Any XML text content found in the file is likely accidental (and potentially dangerous if the text resembles XML and the developer believes the text to be functional)
 </div>
 <br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "ExtraText" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
+</div>
+<a name="SpUsage"></a>
+<div class="issue">
+<div class="id"><a href="#" title="Return to top">SpUsage: Using <code>dp</code> instead of <code>sp</code> for text sizes</a><div class="issueSeparator"></div>
+</div>
+<div class="warningslist">
+<span class="location"><a href="../../src/main/res/values/dimens.xml">../../src/main/res/values/dimens.xml</a>:12</span>: <span class="message">This dimension is used as a text size: Should use "<code>sp</code>" instead of "<code>dp</code>"</span><br /><pre class="errorlines">
+<span class="lineno">   9</span>     &lt;dimen name="alarmSwitch_marginRight">20dp&lt;/dimen>
+<span class="lineno">  10</span>     &lt;dimen name="itemList_height">40dp&lt;/dimen>
+<span class="lineno">  11</span>     &lt;dimen name="itemList_padding">5dp&lt;/dimen>
+<span class="lineno">  12</span>     &lt;dimen name="itemList_font_size"><span class="errorspan">18dp&lt;/dimen></span>
+<span class="lineno">  13</span>     &lt;dimen name="alarm_text_size">15dp&lt;/dimen>
+<span class="lineno">  14</span> 
+</pre>
+<ul><span class="location"><a href="../../src/main/res/layout/notes_list.xml">../../src/main/res/layout/notes_list.xml</a>:18</span>: <span class="message">Dimension used as a text size here</span><br /><pre class="errorlines">
+<span class="lineno">  15</span>         android:layout_height="match_parent"
+<span class="lineno">  16</span>         android:layout_margin="@dimen/external_wrapper_margin"
+<span class="lineno">  17</span>         android:hint="@string/emptyList"
+<span class="lineno">  18</span>         <span class="errorspan">android:textSize="@dimen/itemList_font_size"/></span>
+<span class="lineno">  19</span> 
+<span class="lineno">  20</span> &lt;/LinearLayout>
+</pre></ul><span class="location"><a href="../../src/main/res/values/dimens.xml">../../src/main/res/values/dimens.xml</a>:13</span>: <span class="message">This dimension is used as a text size: Should use "<code>sp</code>" instead of "<code>dp</code>"</span><br /><pre class="errorlines">
+<span class="lineno">  10</span>     &lt;dimen name="itemList_height">40dp&lt;/dimen>
+<span class="lineno">  11</span>     &lt;dimen name="itemList_padding">5dp&lt;/dimen>
+<span class="lineno">  12</span>     &lt;dimen name="itemList_font_size">18dp&lt;/dimen>
+<span class="lineno">  13</span>     &lt;dimen name="alarm_text_size"><span class="errorspan">15dp&lt;/dimen></span>
+<span class="lineno">  14</span> 
+<span class="lineno">  15</span> 
+</pre>
+<ul><span class="location"><a href="../../src/main/res/layout-v14/note_detail.xml">../../src/main/res/layout-v14/note_detail.xml</a>:137</span>: <span class="message">Dimension used as a text size here</span><br /><pre class="errorlines">
+<span class="lineno"> 134</span>                 android:layout_width="wrap_content"
+<span class="lineno"> 135</span>                 android:layout_height="wrap_content"
+<span class="lineno"> 136</span>                 android:textColor="@color/black"
+<span class="lineno"> 137</span>                 <span class="errorspan">android:textSize="@dimen/alarm_text_size"/></span>
+<span class="lineno"> 138</span> 
+<span class="lineno"> 139</span>         &lt;/LinearLayout>
+</pre></ul></div>
+<div class="metadata">Note: This issue has an associated quickfix operation in Android Studio/IntelliJ&nbsp;<img alt="Fix" border="0" align="top" src="lint-results_files/lint-run.png" />
+<br>
+Priority: 3 / 10<br/>
+Category: Correctness</div>
+Severity: <span class="warning">Warning</span><div class="summary">
+Explanation: Using <code>dp</code> instead of <code>sp</code> for text sizes.</div>
+<div class="explanation">
+When setting text sizes, you should normally use <code>sp</code>, or "scale-independent pixels". This is like the <code>dp</code> unit, but it is also scaled by the user's font size preference. It is recommend you use this unit when specifying font sizes, so they will be adjusted for both the screen density and the user's preference.<br/>
+<br/>
+There <b>are</b> cases where you might need to use <code>dp</code>; typically this happens when the text is in a container with a specific dp-size. This will prevent the text from spilling outside the container. Note however that this means that the user's font size settings are not respected, so consider adjusting the layout itself to be more flexible.
+</div>
+<br/><div class="moreinfo">More info: <a href="http://developer.android.com/training/multiscreen/screendensities.html">http://developer.android.com/training/multiscreen/screendensities.html</a>
+</div><br/>To suppress this error, use the issue id "SpUsage" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
 </div>
 
 <a name="Security"></a>
@@ -220,18 +332,84 @@ To fix this warning, decide whether your application should support backup, and 
 <a name="Performance"></a>
 <div class="category"><a href="#" title="Return to top">Performance</a><div class="categorySeparator"></div>
 </div>
+<a name="ObsoleteLayoutParam"></a>
+<div class="issue">
+<div class="id"><a href="#" title="Return to top">ObsoleteLayoutParam: Obsolete layout params</a><div class="issueSeparator"></div>
+</div>
+<div class="warningslist">
+<span class="location"><a href="../../src/main/res/layout/note_detail.xml">../../src/main/res/layout/note_detail.xml</a>:82</span>: <span class="message">Invalid layout param in a <code>LinearLayout</code>: <code>layout_alignParentLeft</code></span><br /><pre class="errorlines">
+<span class="lineno">  79</span>             android:layout_width="wrap_content"
+<span class="lineno">  80</span>             android:layout_height="wrap_content"
+<span class="lineno">  81</span>             android:orientation="horizontal"
+<span class="lineno">  82</span>             <span class="errorspan">android:layout_alignParentLeft="true"</span>
+<span class="lineno">  83</span>             android:layout_gravity="center_horizontal">
+<span class="lineno">  84</span> 
+</pre>
+</div>
+<div class="metadata">Note: This issue has an associated quickfix operation in Eclipse/ADT & Android Studio/IntelliJ&nbsp;<img alt="Fix" border="0" align="top" src="lint-results_files/lint-run.png" />
+<br>
+Priority: 6 / 10<br/>
+Category: Performance</div>
+Severity: <span class="warning">Warning</span><div class="summary">
+Explanation: Obsolete layout params.</div>
+<div class="explanation">
+The given layout_param is not defined for the given layout, meaning it has no effect. This usually happens when you change the parent layout or move view code around without updating the layout params. This will cause useless attribute processing at runtime, and is misleading for others reading the layout so the parameter should be removed.
+</div>
+<br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "ObsoleteLayoutParam" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
+</div>
+<a name="InefficientWeight"></a>
+<div class="issue">
+<div class="id"><a href="#" title="Return to top">InefficientWeight: Inefficient layout weight</a><div class="issueSeparator"></div>
+</div>
+<div class="warningslist">
+<span class="location"><a href="../../src/main/res/layout/note_detail.xml">../../src/main/res/layout/note_detail.xml</a>:34</span>: <span class="message">Use a <code>layout_height</code> of <code>0dp</code> instead of <code>wrap_content</code> for better performance</span><br /><pre class="errorlines">
+<span class="lineno">  31</span>                 android:maxLines="1"/>
+<span class="lineno">  32</span>             &lt;EditText android:id="@+id/titleEditText"
+<span class="lineno">  33</span>                 android:layout_width="fill_parent"
+<span class="lineno">  34</span>                 <span class="errorspan">android:layout_height="wrap_content"</span>
+<span class="lineno">  35</span>                 android:layout_weight="1"
+<span class="lineno">  36</span>                 android:inputType="text"
+</pre>
+<span class="location"><a href="../../src/main/res/layout/note_detail.xml">../../src/main/res/layout/note_detail.xml</a>:53</span>: <span class="message">Use a <code>layout_height</code> of <code>0dp</code> instead of <code>wrap_content</code> for better performance</span><br /><pre class="errorlines">
+<span class="lineno">  50</span> 
+<span class="lineno">  51</span>             &lt;EditText android:id="@+id/contentEditText"
+<span class="lineno">  52</span>                 android:layout_width="fill_parent"
+<span class="lineno">  53</span>                 <span class="errorspan">android:layout_height="wrap_content"</span>
+<span class="lineno">  54</span>                 android:layout_weight="1"
+<span class="lineno">  55</span>                 android:scrollbars="vertical"
+</pre>
+</div>
+<div class="metadata">Note: This issue has an associated quickfix operation in Eclipse/ADT & Android Studio/IntelliJ&nbsp;<img alt="Fix" border="0" align="top" src="lint-results_files/lint-run.png" />
+<br>
+Priority: 3 / 10<br/>
+Category: Performance</div>
+Severity: <span class="warning">Warning</span><div class="summary">
+Explanation: Inefficient layout weight.</div>
+<div class="explanation">
+When only a single widget in a LinearLayout defines a weight, it is more efficient to assign a width/height of <code>0dp</code> to it since it will absorb all the remaining space anyway. With a declared width/height of <code>0dp</code> it does not have to measure its own size first.
+</div>
+<br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "InefficientWeight" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
+</div>
 <a name="Overdraw"></a>
 <div class="issue">
 <div class="id"><a href="#" title="Return to top">Overdraw: Overdraw: Painting regions more than once</a><div class="issueSeparator"></div>
 </div>
 <div class="warningslist">
-<span class="location"><a href="../../src/main/res/layout/notes_list.xml">../../src/main/res/layout/notes_list.xml</a>:6</span>: <span class="message">Possible overdraw: Root element paints background <code>@color/defaultGrey</code> with a theme that also paints a background (inferred theme is <code>@android:style/Theme.Holo.Light</code>)</span><br /><pre class="errorlines">
-<span class="lineno">   3</span> &lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<span class="location"><a href="../../src/main/res/layout/note_detail.xml">../../src/main/res/layout/note_detail.xml</a>:8</span>: <span class="message">Possible overdraw: Root element paints background <code>#ffffa000</code> with a theme that also paints a background (inferred theme is <code>@android:style/Theme.Holo.Light</code>)</span><br /><pre class="errorlines">
+<span class="lineno">   5</span>     android:orientation="vertical" android:layout_width="match_parent"
+<span class="lineno">   6</span>     android:layout_height="match_parent"
+<span class="lineno">   7</span>     android:baselineAligned="false"
+<span class="lineno">   8</span>     <span class="errorspan">android:background="#ffffa000"></span>
+<span class="lineno">   9</span> 
+<span class="lineno">  10</span>     // Title + Content
+</pre>
+<span class="location"><a href="../../src/main/res/layout/notes_list.xml">../../src/main/res/layout/notes_list.xml</a>:7</span>: <span class="message">Possible overdraw: Root element paints background <code>@color/defaultGrey</code> with a theme that also paints a background (inferred theme is <code>@android:style/Theme.Holo.Light</code>)</span><br /><pre class="errorlines">
 <span class="lineno">   4</span>       android:layout_width="fill_parent"
 <span class="lineno">   5</span>       android:layout_height="fill_parent"
-<span class="lineno">   6</span>       <span class="errorspan">android:background="@color/defaultGrey"></span>
-<span class="lineno">   7</span>     
-<span class="lineno">   8</span>     &lt;ListView android:id="@+id/android:list"
+<span class="lineno">   6</span>     android:orientation="vertical"
+<span class="lineno">   7</span>       <span class="errorspan">android:background="@color/defaultGrey"></span>
+<span class="lineno">   8</span>     
+<span class="lineno">   9</span>     &lt;ListView android:id="@+id/android:list"
 </pre>
 </div>
 <div class="metadata">Priority: 3 / 10<br/>
@@ -255,6 +433,14 @@ Of course it's possible that your custom drawable is translucent and you want it
 <div class="id"><a href="#" title="Return to top">UnusedResources: Unused resources</a><div class="issueSeparator"></div>
 </div>
 <div class="warningslist">
+<span class="location"><a href="../../src/main/res/values/colours.xml">../../src/main/res/values/colours.xml</a>:10</span>: <span class="message">The resource <code>R.color.darkGray</code> appears to be unused</span><br /><pre class="errorlines">
+<span class="lineno">   7</span>     &lt;color name="yellowDark">#db6db142&lt;/color>
+<span class="lineno">   8</span>     &lt;color name="white">#5affffff&lt;/color>
+<span class="lineno">   9</span>     &lt;color name="defaultGrey">#5ad3c8c9&lt;/color>
+<span class="lineno">  10</span>     &lt;color <span class="errorspan">name="darkGray">#82322829&lt;/color></span>
+<span class="lineno">  11</span>     &lt;color name="black">#000000&lt;/color>
+<span class="lineno">  12</span> 
+</pre>
 <span class="location"><a href="../../src/main/res/drawable/icon.png">../../src/main/res/drawable/icon.png</a></span>: <img class="embedimage" align="right" src="../../src/main/res/drawable/icon.png" /><span class="message">The resource <code>R.drawable.icon</code> appears to be unused</span><br clear="right"/>
 <span class="location"><a href="../../src/main/res/values/strings.xml">../../src/main/res/values/strings.xml</a>:6</span>: <span class="message">The resource <code>R.string.no_notes</code> appears to be unused</span><br /><pre class="errorlines">
 <span class="lineno">   3</span> &lt;resources>
@@ -264,37 +450,13 @@ Of course it's possible that your custom drawable is translucent and you want it
 <span class="lineno">   7</span>     &lt;string name="menu_insert">Add New Note&lt;/string>
 <span class="lineno">   8</span>     &lt;string name="menu_delete">Delete Note&lt;/string>
 </pre>
-<span class="location"><a href="../../src/main/res/values/strings.xml">../../src/main/res/values/strings.xml</a>:11</span>: <span class="message">The resource <code>R.string.confirm</code> appears to be unused</span><br /><pre class="errorlines">
-<span class="lineno">   8</span>     &lt;string name="menu_delete">Delete Note&lt;/string>
-<span class="lineno">   9</span>     &lt;string name="title">Title&lt;/string>
-<span class="lineno">  10</span>     &lt;string name="body">Content&lt;/string>
-<span class="lineno">  11</span>     &lt;string <span class="errorspan">name="confirm">Save&lt;/string></span>
-<span class="lineno">  12</span>     &lt;string name="edit_note">Edit Note&lt;/string>
-<span class="lineno">  13</span>     &lt;string name="new_note">New Note&lt;/string>
-</pre>
-<span class="location"><a href="../../src/main/res/values/strings.xml">../../src/main/res/values/strings.xml</a>:20</span>: <span class="message">The resource <code>R.string.alarmSwitch</code> appears to be unused</span><br /><pre class="errorlines">
-<span class="lineno">  17</span>     &lt;string name="lowPriority">Normal&lt;/string>
-<span class="lineno">  18</span>     &lt;string name="highPriority">Urgent&lt;/string>
-<span class="lineno">  19</span>     &lt;string name="alarm">Alarm&lt;/string>
-<span class="lineno">  20</span>     &lt;string <span class="errorspan">name="alarmSwitch">Set Alarm&lt;/string></span>
-<span class="lineno">  21</span>     &lt;string name="alarmTime">Set Time&lt;/string>
-<span class="lineno">  22</span> 
-</pre>
-<span class="location"><a href="../../src/main/res/values/strings.xml">../../src/main/res/values/strings.xml</a>:21</span>: <span class="message">The resource <code>R.string.alarmTime</code> appears to be unused</span><br /><pre class="errorlines">
-<span class="lineno">  18</span>     &lt;string name="highPriority">Urgent&lt;/string>
-<span class="lineno">  19</span>     &lt;string name="alarm">Alarm&lt;/string>
-<span class="lineno">  20</span>     &lt;string name="alarmSwitch">Set Alarm&lt;/string>
-<span class="lineno">  21</span>     &lt;string <span class="errorspan">name="alarmTime">Set Time&lt;/string></span>
-<span class="lineno">  22</span> 
-<span class="lineno">  23</span>     // Switch button
-</pre>
 <span class="location"><a href="../../src/main/res/values/strings.xml">../../src/main/res/values/strings.xml</a>:31</span>: <span class="message">The resource <code>R.string.alarmDismissedMSG</code> appears to be unused</span><br /><pre class="errorlines">
 <span class="lineno">  28</span>     &lt;string name="alarmInThePastMSG">The alarm cannot be set:\nit is now or in the past.&lt;/string>
 <span class="lineno">  29</span>     &lt;string name="alarmSetMSG">Alarm set at:\n&lt;/string>
 <span class="lineno">  30</span>     &lt;string name="alarmCancelledMSG">Alarm cancelled.&lt;/string>
 <span class="lineno">  31</span>     &lt;string <span class="errorspan">name="alarmDismissedMSG">Alarm dismissed.&lt;/string></span>
 <span class="lineno">  32</span> 
-<span class="lineno">  33</span>     // Dismiss alarm pop-up
+<span class="lineno">  33</span>     &lt;!-- Dismiss alarm pop-up -->
 </pre>
 </div>
 <div class="metadata">Priority: 3 / 10<br/>
@@ -373,11 +535,11 @@ Low density is not really used much anymore, so this check ignores the ldpi dens
 <div class="warningslist">
 <span class="location"><a href="../../src/main/res/values/strings.xml">../../src/main/res/values/strings.xml</a>:25</span>: <span class="message">The standard Android way to capitalize CANCEL is "Cancel" (tip: use <code>@android:string/cancel</code> instead)</span><br /><pre class="errorlines">
 <span class="lineno">  22</span> 
-<span class="lineno">  23</span>     // Switch button
+<span class="lineno">  23</span>     &lt;!-- Switch button -->
 <span class="lineno">  24</span>     &lt;string name="setButton">SET&lt;/string>
 <span class="lineno">  25</span>     &lt;string name="cancelButton"><span class="errorspan">CANCEL&lt;/string></span>
 <span class="lineno">  26</span> 
-<span class="lineno">  27</span>     // Toast Notifications
+<span class="lineno">  27</span>     &lt;!-- Toast Notifications -->
 </pre>
 </div>
 <div class="metadata">Priority: 2 / 10<br/>
@@ -388,6 +550,33 @@ Explanation: Cancel/OK dialog button capitalization.</div>
 The standard capitalization for OK/Cancel dialogs is "OK" and "Cancel". To ensure that your dialogs use the standard strings, you can use the resource strings @android:string/ok and @android:string/cancel.
 </div>
 <br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "ButtonCase" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
+</div>
+
+<a name="Internationalization"></a>
+<div class="category"><a href="#" title="Return to top">Internationalization</a><div class="categorySeparator"></div>
+</div>
+<a name="RelativeOverlap"></a>
+<div class="issue">
+<div class="id"><a href="#" title="Return to top">RelativeOverlap: Overlapping items in RelativeLayout</a><div class="issueSeparator"></div>
+</div>
+<div class="warningslist">
+<span class="location"><a href="../../src/main/res/layout/note_detail.xml">../../src/main/res/layout/note_detail.xml</a>:151</span>: <span class="message"><code>@id/alarmTimeValue</code> can overlap <code>@id/alarmTimeString</code> if @string/alarmTime, @id/alarmTimeValue grow due to localized text expansion</span><br /><pre class="errorlines">
+<span class="lineno"> 148</span>                 android:textColor="#000000"
+<span class="lineno"> 149</span>                 style="@android:style/TextAppearance.Holo" />
+<span class="lineno"> 150</span> 
+<span class="lineno"> 151</span>             <span class="errorspan">&lt;TextView android:id="@+id/alarmTimeValue"</span>
+<span class="lineno"> 152</span>                 android:layout_width="wrap_content"
+<span class="lineno"> 153</span>                 android:layout_height="wrap_content"
+</pre>
+</div>
+<div class="metadata">Priority: 3 / 10<br/>
+Category: Internationalization</div>
+Severity: <span class="warning">Warning</span><div class="summary">
+Explanation: Overlapping items in RelativeLayout.</div>
+<div class="explanation">
+If relative layout has text or button items aligned to left and right sides they can overlap each other due to localized text expansion unless they have mutual constraints like <code>toEndOf</code>/<code>toStartOf</code>.
+</div>
+<br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "RelativeOverlap" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
 </div>
 
 <a name="MissingIssues"></a>
