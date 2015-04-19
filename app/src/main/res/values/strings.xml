@@ -20,22 +20,30 @@
     <string name="alarmSwitch">Set Alarm</string>
     <string name="alarmTime">Set Time</string>
 
-    // Switch button
+    <!-- Switch button -->
     <string name="setButton">SET</string>
     <string name="cancelButton">CANCEL</string>
 
-    // Toast Notifications
+    <!-- Toast Notifications -->
     <string name="alarmInThePastMSG">The alarm cannot be set:\nit is now or in the past.</string>
     <string name="alarmSetMSG">Alarm set at:\n</string>
     <string name="alarmCancelledMSG">Alarm cancelled.</string>
     <string name="alarmDismissedMSG">Alarm dismissed.</string>
 
-    // Dismiss alarm pop-up
+    <!-- Dismiss alarm pop-up -->
     <string name="dismissAlarmMSG">Time is over:\n alarm will be dismissed.</string>
     <string name="OK">OK</string>
 
-    // Top notification
+    <!-- Top notification -->
     <string name="noteReminderMSG">Note Reminder</string>
     <string name="noteReminderMessageMSG">A note requires you attention!</string>
+
+
+    <!-- Hints -->
+    <string name="titleHint">Title here</string>
+    <string name="contentHint">Content here</string>
+
+    <string name="emptyString">*empty*</string>
+
 
 </resources>

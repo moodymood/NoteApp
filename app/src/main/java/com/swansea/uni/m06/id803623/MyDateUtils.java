@@ -21,7 +21,6 @@ public class MyDateUtils {
             Date mNewDate = format.parse(String.valueOf(dateString));
             return mNewDate;
         } catch (ParseException e) {
-            e.printStackTrace();
             return null;
         }
     }

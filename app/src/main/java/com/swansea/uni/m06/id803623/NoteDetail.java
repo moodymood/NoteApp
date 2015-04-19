@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,8 +37,7 @@ public class NoteDetail extends  FragmentActivity {
     private TextView mAlarmTimeValue;
     private Switch mAlarmSwitch;
 
-    private DatePickerDialog mDatePicker;
-    private TimePickerDialog mTimePicker;
+
 
     private Long mRowId;
     private NotesDbAdapter mDbHelper;
@@ -78,9 +78,7 @@ public class NoteDetail extends  FragmentActivity {
         updateBackgroundColour();
 
         if(isNoteUrgent()){
-
             showAlarmSetter(true);
-
             if(alarmIsExpired())
                 showDismissPopup();
         }
@@ -124,7 +122,6 @@ public class NoteDetail extends  FragmentActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        saveState();
         outState.putSerializable(NotesDbAdapter.KEY_ROW_ID, mRowId);
     }
 
@@ -229,11 +226,11 @@ public class NoteDetail extends  FragmentActivity {
                 if (mAlarmSwitch.isChecked()) {
                     // if the user didn't press cancel
                     showAlarmTimeDialog();
-
                     // Deactivating alarm
                 } else {
+                    mAlarmTimeValue.setText(null);
                     cancelAlarm();
-                    mAlarmTimeValue.setText("");
+
                 }
             }
         });
@@ -247,35 +244,13 @@ public class NoteDetail extends  FragmentActivity {
     public void showAlarmTimeDialog()
     {
 
+        final  DatePickerDialog mDatePicker;
+        final TimePickerDialog mTimePicker;
+
         final Calendar mCalendar = Calendar.getInstance();
         mCalendar.setTime(new Date(System.currentTimeMillis()));
 
 
-        mTimePicker = new TimePickerDialog(NoteDetail.this, new TimePickerDialog.OnTimeSetListener() {
-
-            @Override
-            public void onTimeSet(TimePicker view, int newHour, int newMinute) {
-
-                mCalendar.set(Calendar.HOUR_OF_DAY, newHour);
-                mCalendar.set(Calendar.MINUTE, newMinute);
-
-                setAlarmOnGUI(mCalendar.getTime());
-
-            }
-        }, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);
-
-        mTimePicker.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-
-                if (userHasSetTime())
-                    mDatePicker.show();
-                else
-                    cancelAlarmOnGUI();
-
-            }
-        });
-        mTimePicker.setTitle(getResources().getString(R.string.alarm));
 
 
         mDatePicker = new DatePickerDialog(NoteDetail.this, new DatePickerDialog.OnDateSetListener() {
@@ -305,6 +280,33 @@ public class NoteDetail extends  FragmentActivity {
             }
         });
         mDatePicker.setTitle(getResources().getString(R.string.alarm));
+
+
+        mTimePicker = new TimePickerDialog(NoteDetail.this, new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker view, int newHour, int newMinute) {
+
+                mCalendar.set(Calendar.HOUR_OF_DAY, newHour);
+                mCalendar.set(Calendar.MINUTE, newMinute);
+
+                setAlarmOnGUI(mCalendar.getTime());
+
+            }
+        }, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);
+
+        mTimePicker.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
+                if (userHasSetTime())
+                    mDatePicker.show();
+                else
+                    cancelAlarmOnGUI();
+
+            }
+        });
+        mTimePicker.setTitle(getResources().getString(R.string.alarm));
 
         mTimePicker.show();
 
@@ -337,8 +339,14 @@ public class NoteDetail extends  FragmentActivity {
      */
     private boolean userHasSetTime()
     {
-        if( mAlarmTimeValue.getText() != null && mAlarmTimeValue.getText() != "" )
-            return true;
+        CharSequence charSequence = mAlarmTimeValue.getText();
+        if(charSequence != null)
+            if( !String.valueOf(charSequence).isEmpty()) {
+                Log.d("NoteDetails", "charSequence: " + charSequence);
+                return true;
+            }
+            else
+                return false;
         else
             return false;
     }
@@ -430,8 +438,8 @@ public class NoteDetail extends  FragmentActivity {
      * Save the note fields on DB
      */
     private void saveState() {
-        String title = mTitleText.getText().toString();
-        String content = mContentText.getText().toString();
+        String title = mTitleText.getText().toString().trim();
+        String content = mContentText.getText().toString().trim();
         int priority = getPriorityFromRadioGroup();
 
         String alarm;

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 
 public class NoteList extends ListActivity {
@@ -114,6 +115,14 @@ public class NoteList extends ListActivity {
         @Override
         public void bindView(View view, Context context, Cursor cursor)  {
             super.bindView(view, context, cursor);
+
+            TextView itemText = (TextView) view.findViewById(R.id.itemText);
+            String title = cursor.getString(
+                    cursor.getColumnIndexOrThrow(NotesDbAdapter.KEY_TITLE));
+            if(title.isEmpty())
+                itemText.setHint(getResources().getString(R.string.emptyString));
+
+
             int priority = cursor.getInt(
                     cursor.getColumnIndexOrThrow(NotesDbAdapter.KEY_PRIORITY));
 

@@ -29,6 +29,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:hint="@string/titleHint"
                 android:maxLength="@integer/note_title_maxLength" />
         </LinearLayout>
 
@@ -47,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
                 android:inputType="textMultiLine"
+                android:hint="@string/contentHint"
                 android:maxLines="@integer/note_content_maxLines"/>
         </LinearLayout>
 
@@ -102,8 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/external_wrapper_margin"
-        android:padding="@dimen/external_wrapper_smallPadding"
-        android:visibility="gone">
+        android:padding="@dimen/external_wrapper_smallPadding">
 
         <TextView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -132,7 +133,8 @@
             <TextView android:id="@+id/alarmTimeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@android:style/TextAppearance.Holo"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/alarm_text_size"/>
 
         </LinearLayout>
 
